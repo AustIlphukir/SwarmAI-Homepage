@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Section from '../components/Section';
 import FeatureCard from '../components/FeatureCard';
 import { useState, useEffect, useRef } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Cpu, Eye, Network, Shield } from 'lucide-react';
 /**
  * The homepage is intentionally minimal.  It shows a passkey
  * entry form until the user enters the correct key via the
@@ -46,6 +46,19 @@ export default function HomePage() {
 
   // ---- Local state to control CTA visibility ----
   const [canShowCta, setCanShowCta] = useState(false);
+  function getSafeRedirectTarget() {
+    if (typeof window === 'undefined') return null;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect');
+      if (!redirect) return null;
+      // Only allow internal absolute paths to avoid open redirects.
+      if (!redirect.startsWith('/') || redirect.startsWith('//')) return null;
+      return redirect;
+    } catch (_) {
+      return null;
+    }
+  }
   // Initialize CTA visibility from persisted meta
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -76,26 +89,41 @@ export default function HomePage() {
   // Bootstrapping: check session via API and fetch content if authenticated
   useEffect(() => {
     let mounted = true;
-    // If localStorage already marks the homepage unlocked, set state synchronously
-    try {
-      if (typeof window !== 'undefined' && localStorage.getItem('swarm_home_unlocked') === '1') {
-        setUnlocked(true);
-        // no need to call server-side checks in tests/local dev when already unlocked
-        return () => { mounted = false };
-      }
-    } catch (_) {
-      // ignore localStorage errors
-    }
-
-    // During tests we avoid making network calls that cause async state updates
+    // During tests we avoid making network calls that cause async state updates.
+    // Tests directly control unlocked/localStorage behavior.
     if (process.env.NODE_ENV === 'test') {
+      try {
+        if (typeof window !== 'undefined' && localStorage.getItem('swarm_home_unlocked') === '1') {
+          setUnlocked(true);
+        }
+      } catch (_) {}
       return () => { mounted = false };
     }
 
     async function bootstrap() {
-      // In production, we could check session status here
-      // For now, rely on localStorage and middleware cookie checks
-      if (mounted) {
+      try {
+        const res = await fetch('/api/status', { credentials: 'include' });
+        const body = await res.json().catch(() => ({}));
+        const serverUnlocked = Boolean(body?.unlocked);
+
+        if (!mounted) return;
+
+        if (serverUnlocked) {
+          setUnlocked(true);
+          try { localStorage.setItem('swarm_home_unlocked', '1'); } catch (_) {}
+          const redirectTarget = getSafeRedirectTarget();
+          if (redirectTarget) {
+            window.location.replace(redirectTarget);
+          }
+          return;
+        }
+
+        // Cookie/session is not valid: ensure stale local flag cannot trigger redirect loops.
+        try { localStorage.removeItem('swarm_home_unlocked'); } catch (_) {}
+        setUnlocked(false);
+      } catch (_) {
+        if (!mounted) return;
+        // If status check fails, keep lock screen by default.
         setUnlocked(false);
       }
     }
@@ -115,6 +143,11 @@ export default function HomePage() {
       const j = await res.json().catch(() => ({}));
       if (j && j.success) {
         try { localStorage.setItem('swarm_home_unlocked', '1'); } catch (_) {}
+        const redirectTarget = getSafeRedirectTarget();
+        if (redirectTarget) {
+          window.location.assign(redirectTarget);
+          return;
+        }
         // In test environment avoid calling navigation.reload (jsdom doesn't implement it)
         if (process.env.NODE_ENV !== 'test') {
           try { window.location.reload(); } catch (_) {}
@@ -272,7 +305,7 @@ export default function HomePage() {
               {/* Intro statements */}
               
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
-                SWARM.AI<br /> Perception Systems for European Defence<span className="text-accent1">_</span>
+                SWARM.AI<span className="text-accent1">_</span>
               </h1>
               <p className="text-lg md:text-xl text-textSecondary">
                 AI backbone for drone detection, tracking and defence.
@@ -315,12 +348,9 @@ export default function HomePage() {
     );
   }
 
-  // Once unlocked, show a simple welcome message.  Additional
-  // content can be added here or on dedicated subpages via the
-  // navigation bar.
   return (
     <>
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden border-b border-[#465644]/60">
         <div className="space-y-24 pointer-events-none">
           <video
             ref={videoRef}
@@ -335,17 +365,25 @@ export default function HomePage() {
           >
             <source src="/videos/source-3.mov" type="video/mp4" />
           </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-background/90" />
         </div>
-        <div className="py-0 relative overflow-hidden flex flex-col items-center justify-center text-center px-4 relative z-10">
-          <h1 className="text-6xl font-bold mb-4">Perception Systems for <span className="text-accent1 font-semibold">European Defence</span></h1>
-          <p className="text-xl md:text-2xl text-textSecondary mb-6 max-w-2xl">
-            Swarm.AI provides <span className="text-accent1 font-semibold">AI perception</span> and multi‑target tracking solutions for modern civil and defence anti-drone operations. 
+        <div className="py-0 relative overflow-hidden flex flex-col items-center justify-center text-center px-4 z-10">
+          <div className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-textSecondary mb-4">
+            swarm.vision
+          </div>
+          <h1 className="text-5xl sm:text-6xl font-bold mb-4">
+            <span className="text-accent1 font-semibold">Perception Systems For European Defence</span>
+            
+          </h1>
+          <p className="text-lg md:text-xl text-textSecondary mb-4 max-w-3xl">
+            Protect airspace 24/7 with AI-powered perception at the edge and a distributed using propreritary mirror-power optical sensors and fault-tolerant, portable sensor architecture.
           </p>
-          <Link 
-            href="/contact" 
+          
+          <Link
+            href="/contact"
             className="inline-flex items-center gap-2 px-6 py-3 bg-accent1 text-white rounded-lg hover:bg-accent1/80 transition-colors font-semibold"
           >
-            Contact Us
+            Contact us
             <ArrowRight className="w-5 h-5" />
           </Link>
           {process.env.NODE_ENV !== 'production' && (
@@ -364,121 +402,146 @@ export default function HomePage() {
           )}
         </div>
       </section>
-      <section className="py-0 relative overflow-hidden flex items-center justify-center">
 
-
-      </section>
-      <section>
-        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <Link href="/product" className="block bg-card rounded-xl p-6 shadow-md space-y-2 hover:shadow-lg transition-shadow">
-            <h3 className="text-center text-4xl font-bold mb-4">1 </h3>
-            <p className="text-textSecondary"><span className="text-accent1 font-semibold">See. Real-Time Perception at the Edge</span><br />
-              We provide cost-effective detection technologies from sensor to chip on the edge. Our perception models are the result of state-of-the-art research. Up to 5 km radius per sensor device.<br />
-              <span className="text-sm">All Sensors · All Platforms · On the Edge</span></p>
-              <video
-                  src="/videos/Drone_Animation_From_Thermal_Image.mp4"
-                  className="w-full h-[50%] object-cover rounded-2xl autoplay loop"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                >
-                </video>
-          </Link>
-          <Link href="/product" className="block bg-card rounded-xl p-6 shadow-md space-y-2 hover:shadow-lg transition-shadow">
-            <h3 className="text-center text-4xl font-bold mb-4">2</h3>
-            <p className="text-textSecondary"><span className="text-accent1 font-semibold">Understand. AI built for the physical world.</span><br />
-            Swarm.ai applies all perception directly at the sensors on the edge. Our 3D perception system fuses vision, thermal, acoustic, and existing sensors into a single, continuously updated 3D airspace model. 
-            <br />
-            <span className="text-sm">Multi-Modal · Distributed · Research-Driven</span></p>
-             <video
-                  src="/videos/PoseEstimationAndTrackingSUV.mp4"
-                  className="w-full h-[50%] object-cover rounded-2xl autoplay loop"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                >
-                </video>
-          </Link>
-          <Link href="/product" className="block bg-card rounded-xl p-6 shadow-md space-y-2 hover:shadow-lg transition-shadow">
-            <h3 className="text-center  text-4xl font-bold mb-4">3</h3>
-            <p className="text-textSecondary"><span className="text-accent1 font-semibold">React. Engineered for mission-critical reliability.</span><br />Built for Critical Environments. Designed from day one for regulated, safety-critical markets — from defence and aerospace to critical infrastructure and mobility.
-            <br />
-              <span className="text-sm">Defence · Aerospace · Critical Infrastructure</span></p>
-              <p className='inline-flex items-center gap-2 px-6 py-3 bg-accent2 text-white rounded-lg hover:bg-accent1/80 transition-colors font-semibold"'>
-                Learn How
-                <ArrowRight className="w-5 h-5" /></p>
-          </Link>
-          
-        </div>
-
-      </section>  
-
-      {/* 1. Product Overview */}
       <Section
-        title="A decentralized perception platform for real-time airspace intelligence"
-        subtitle="Swarm.ai is an AI-native perception system that detects, tracks, and understands aerial objects in real time using distributed edge intelligence. It fuses multi-modal sensor data across a resilient mesh — without relying on centralized infrastructure."
+        title="Defend against drones"
+        subtitle="Three operational domains for modern counter-drone defense, powered by resilient AI-based sensing."
+        wrapperClassName="border-t border-[#465644]/55 bg-gradient-to-b from-[#141c16]/75 to-[#101713]/75"
+      >
+        <div className="grid md:grid-cols-3 gap-6 mt-6">
+          <div className="bg-card rounded-2xl overflow-hidden shadow-md border border-card/60">
+            <Image
+              src="/images/87753f8d-9322-4db9-9c40-aa5d3ed249d3.png"
+              alt="Air domain drone defense"
+              width={1200}
+              height={700}
+              className="h-48 w-full object-cover"
+            />
+            <div className="p-6">
+              <h3 className="text-2xl font-semibold mb-2">Air</h3>
+              <p className="text-textSecondary">
+                Detect small flying drones early. Deployable on drones to enable evasive maneuvers and fast response.
+              </p>
+            </div>
+          </div>
+          <div className="bg-card rounded-2xl overflow-hidden shadow-md border border-card/60">
+            <Image
+              src="/images/16beed3b-21af-4a36-96d9-f6e1d4b90d31.png"
+              alt="Land domain drone defense"
+              width={1200}
+              height={700}
+              className="h-48 w-full object-cover"
+            />
+            <div className="p-6">
+              <h3 className="text-2xl font-semibold mb-2">Land</h3>
+              <p className="text-textSecondary">
+                Solutions for critical infrastructure protection and mobile support for soldiers in the field.
+              </p>
+            </div>
+          </div>
+          <div className="bg-card rounded-2xl overflow-hidden shadow-md border border-card/60">
+            <Image
+              src="/images/9cc2f798-4eeb-4dbc-bee3-9e3b964061ab.png"
+              alt="Sea domain drone defense"
+              width={1200}
+              height={700}
+              className="h-48 w-full object-cover"
+            />
+            <div className="p-6">
+              <h3 className="text-2xl font-semibold mb-2">Sea</h3>
+              <p className="text-textSecondary">
+                We provide systems for floating platforms and water drones for maritime surveillance and defense.
+              </p>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      <Section
+        title="Core tech"
+        subtitle={
+          <>
+            A hardware stack of sensors and edge nodes, built for real-time perception without data bottlenecks,
+            paired with cutting-edge AI research. 
+          </>
+        }
+        wrapperClassName="border-t border-[#495a47]/55 bg-gradient-to-b from-[#171d16]/75 to-[#121813]/75"
       >
         <div className="grid md:grid-cols-4 gap-4 mt-6">
-          <FeatureCard icon={<>🧠</>} title="Real-time, on-edge" desc="Intelligence computed locally at the sensor." />
-          <FeatureCard icon={<>🔎</>} title="Multi-modal fusion" desc="Vision, thermal, acoustic, RF-ready." />
-          <FeatureCard icon={<>🧬</>} title="Decentralized & resilient" desc="Mesh-first, no single point of failure." />
-          <FeatureCard icon={<>👩‍🔧</>} title="Built for safety" desc="Designed for regulated environments." />
+          <FeatureCard icon={<Eye className="w-7 h-7 mx-auto text-accent1" />} title="360° RGB & TIR" desc="24/7 fully-automated surveillance of the air space." />
+          <FeatureCard icon={<Cpu className="w-7 h-7 mx-auto text-accent1" />} title="Real-time Edge CV" desc="Compute at the sensor edge, with minimal data footprint." />
+          <FeatureCard icon={<Network className="w-7 h-7 mx-auto text-accent1" />} title="Distributed" desc="Robust, fault-tolerant, and highly scalable. All compute is done at the sensor mesh." />
+          <FeatureCard icon={<Shield className="w-7 h-7 mx-auto text-accent1" />} title="Resilient by design" desc="Built for mission-critical environments. Redundant to sensor losses." />
+        </div>
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/tech"
+            className="inline-flex items-center gap-2 px-5 py-3 bg-card rounded-lg hover:bg-card/80 transition-colors text-sm font-semibold"
+          >
+            Explore Core Tech
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </Section>
+
+
+      <Section
+        title="Team"
+        subtitle="Focused on capabilities and a proven track record."
+        wrapperClassName="border-t border-[#4d5f48]/55 bg-gradient-to-b from-[#1a1f18]/75 to-[#141912]/75"
+      >
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+          <div className="bg-card rounded-xl p-5">
+            <div className="text-sm text-textSecondary">Research</div>
+            <div className="mt-2 font-semibold">CVPR‑Track‑Record in Computer Vision</div>
+            <div className="mt-2 text-sm text-textSecondary">
+              Publications and results from top-tier conferences.
+            </div>
+          </div>
+          <div className="bg-card rounded-xl p-5">
+            <div className="text-sm text-textSecondary">Autonomous Systems</div>
+            <div className="mt-2 font-semibold">Industry-proven autonomy expertise</div>
+            <div className="mt-2 text-sm text-textSecondary">
+              Robustness, safety, and integration in real deployments.
+            </div>
+          </div>
+          <div className="bg-card rounded-xl p-5">
+            <div className="text-sm text-textSecondary">Experience</div>
+            <div className="mt-2 font-semibold">Experience from Huawei &amp; Mercedes-Benz</div>
+            <div className="mt-2 text-sm text-textSecondary">
+              Scaling, product leadership, and international execution.
+            </div>
+          </div>
+          <div className="bg-card rounded-xl p-5">
+            <div className="text-sm text-textSecondary">Remote Sensing</div>
+            <div className="mt-2 font-semibold">Top-ranked German team</div>
+            <div className="mt-2 text-sm text-textSecondary">
+              According to ShanghaiRanking GRAS 2020 (AS0224).
+              {" "}
+              <a
+                href="https://www.shanghairanking.com/rankings/gras/2020/AS0224"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent1 hover:underline"
+              >
+                Source
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/team"
+            className="inline-flex items-center gap-2 px-5 py-3 bg-card rounded-lg hover:bg-card/80 transition-colors text-sm font-semibold"
+          >
+            Get to know us
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </Section>
 
       {/* Footer */}
-      
-      <section className="w-full py-16 bg-background border-t border-card/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <h2 className="text-xs tracking-widest uppercase text-textSecondary">Trusted by partners</h2>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-6 opacity-80">
-            {/* Partners / micro proof */}
-            <a
-              href="https://www.tum.de/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline text-accent1 font-medium"
-            >
-              TUM Venture Labs &amp; Photogrammetry & Remote Sensing
-            </a>
-            <a
-              href="https://www.dide.com/defence/en/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline text-accent1 font-medium"
-            >
-              Industrial Defence and Incubation partner
-            </a>
-            <a
-              href="https://www.rvconnex.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline text-accent1 font-medium"
-            >
-              RV Connex Co., Ltd.
-            </a>
-            <a
-              href="https://3dwe.ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline text-accent1 font-medium"
-            >
-              3DWe
-            </a>
-            <a
-              href="https://www.suvarnabhumiairport.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline text-accent1 font-medium"
-            >
-              Bangkok Airport (BKK)
-            </a>
-          </div>
-        </div>
-      </section>
-      <section className="w-full py-8 bg-background border-t border-card/50">
+      <section className="w-full py-8 bg-background border-t border-[#465644]/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-textSecondary">
             <div className="opacity-80">
@@ -488,7 +551,8 @@ export default function HomePage() {
               <Link href="/about" className="hover:underline">About</Link>
               <Link href="/product" className="hover:underline">Product</Link>
               <Link href="/contact" className="hover:underline">Contact</Link>
-              <Link href="/privacy" className="hover:underline">Privacy</Link>
+              <Link href="/imprint" className="hover:underline">Imprint</Link>
+              <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
             </nav>
             <div className="flex items-center gap-4">
               <Link href="/contact" className="text-accent1 hover:underline" aria-label="Get product updates">

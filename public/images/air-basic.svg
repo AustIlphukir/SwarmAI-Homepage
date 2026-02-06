@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Air</title>
+  <desc id="desc">Basic air illustration with sky, clouds, and a drone silhouette.</desc>
+  <rect width="1200" height="700" fill="#0b2447"/>
+  <rect y="420" width="1200" height="280" fill="#13315f"/>
+
+  <circle cx="980" cy="120" r="56" fill="#f3f4f6"/>
+  <ellipse cx="240" cy="140" rx="90" ry="34" fill="#9cc3f0"/>
+  <ellipse cx="320" cy="140" rx="70" ry="28" fill="#9cc3f0"/>
+  <ellipse cx="500" cy="210" rx="82" ry="30" fill="#7aa8db"/>
+  <ellipse cx="565" cy="210" rx="60" ry="24" fill="#7aa8db"/>
+
+  <rect x="520" y="300" width="160" height="26" rx="13" fill="#e5e7eb"/>
+  <rect x="586" y="268" width="28" height="22" rx="6" fill="#e5e7eb"/>
+  <rect x="478" y="312" width="48" height="12" rx="6" fill="#e5e7eb"/>
+  <rect x="674" y="312" width="48" height="12" rx="6" fill="#e5e7eb"/>
+  <circle cx="502" cy="318" r="16" fill="#111827"/>
+  <circle cx="698" cy="318" r="16" fill="#111827"/>
+
+  <text x="60" y="640" fill="#e5e7eb" font-family="Arial, sans-serif" font-size="64" font-weight="700">AIR</text>
+</svg>
