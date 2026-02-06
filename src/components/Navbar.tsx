@@ -57,6 +57,7 @@ export default function Navbar() {
           <div className="hidden md:flex space-x-8">
             {links.map((link) => {
               const redirectTarget = `/?redirect=${encodeURIComponent(link.href)}`;
+              const requiresUnlock = link.href !== '/contact';
               return (
                 <Link
                   key={link.label}
@@ -64,7 +65,7 @@ export default function Navbar() {
                   className="text-textSecondary hover:text-accent1 transition-colors"
                   onClick={(e) => {
                     // If locked, force a full-page redirect to ensure middleware runs
-                    if (!isUnlocked) {
+                    if (!isUnlocked && requiresUnlock) {
                       e.preventDefault();
                       window.location.href = redirectTarget;
                     }
@@ -85,13 +86,14 @@ export default function Navbar() {
           <div className="px-2 pt-2 pb-3 space-y-1">
             {links.map((link) => {
               const redirectTarget = `/?redirect=${encodeURIComponent(link.href)}`;
+              const requiresUnlock = link.href !== '/contact';
               return (
                 <Link
                   key={link.label}
                   href={link.href}
                   onClick={(e) => {
                     setOpen(false);
-                    if (!isUnlocked) {
+                    if (!isUnlocked && requiresUnlock) {
                       e.preventDefault();
                       window.location.href = redirectTarget;
                     }

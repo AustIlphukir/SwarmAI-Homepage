@@ -17,7 +17,27 @@ export default function CorePage() {
           </p>
         </div>
       </div>
-
+<div className="mt-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mt-8 rounded-2xl border border-white/10 bg-black/30 p-6">
+          <div className="grid items-center gap-4 md:grid-cols-3">
+            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
+              <Radar className="mx-auto h-6 w-6 text-accentCool" />
+              <p className="mt-2 text-sm font-medium">Remote Sensing</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
+              <Brain className="mx-auto h-6 w-6 text-accent1" />
+              <p className="mt-2 text-sm font-medium">Edge Perception</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
+              <Network className="mx-auto h-6 w-6 text-accentCool2" />
+              <p className="mt-2 text-sm font-medium">Distributed Interfaces and Big Data Compute</p>
+            </div>
+          </div>
+          <p className="mt-3 text-center text-xs text-textSecondary">
+            High-level system flow from optical sensing to edge inference and network-level intelligence.
+          </p>
+        </div>
+      </div>
       <Section
         title="Hardware solution: Sensor system + edge node"
         subtitle="Intelligence runs directly at the sensor, enabling low latency, minimal data paths, and high resilience."
@@ -137,27 +157,7 @@ export default function CorePage() {
           </Link>
         </div>
       </div>
-      <div className="mt-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mt-8 rounded-2xl border border-white/10 bg-black/30 p-6">
-          <div className="grid items-center gap-4 md:grid-cols-3">
-            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
-              <Radar className="mx-auto h-6 w-6 text-accentCool" />
-              <p className="mt-2 text-sm font-medium">Remote Sensing</p>
-            </div>
-            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
-              <Brain className="mx-auto h-6 w-6 text-accent1" />
-              <p className="mt-2 text-sm font-medium">Edge Perception</p>
-            </div>
-            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
-              <Network className="mx-auto h-6 w-6 text-accentCool2" />
-              <p className="mt-2 text-sm font-medium">Distributed Interfaces and Big Data Compute</p>
-            </div>
-          </div>
-          <p className="mt-3 text-center text-xs text-textSecondary">
-            High-level system flow from optical sensing to edge inference and network-level intelligence.
-          </p>
-        </div>
-      </div>
+      
     </div>
   );
 }
