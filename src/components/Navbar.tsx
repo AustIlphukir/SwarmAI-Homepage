@@ -33,6 +33,7 @@ export default function Navbar() {
   // itself links back to the home page, so we omit an explicit
   // "Home" entry.
   const links = [
+    { href: '/tech', label: 'Tech' },
     { href: '/product', label: 'Product' },
     { href: '/services', label: 'Services' },
     { href: '/about', label: 'About Us' },
