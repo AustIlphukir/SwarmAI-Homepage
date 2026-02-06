@@ -25,7 +25,7 @@ export default function AboutPage() {
         </p>
       </section>
 
-          <div className="mt-8 rounded-2xl border border-white/10 bg-black/30 p-6">
+          {/* <div className="mt-8 rounded-2xl border border-white/10 bg-black/30 p-6">
             <div className="grid items-center gap-4 md:grid-cols-3">
               <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
                 <Radar className="mx-auto h-6 w-6 text-accentCool" />
@@ -43,7 +43,7 @@ export default function AboutPage() {
             <p className="mt-3 text-center text-xs text-textSecondary">
               High-level system flow from optical sensing to edge inference and network-level intelligence.
             </p>
-          </div>
+          </div> */}
 
           <Section title="Team" subtitle="">
             <div className="rounded-2xl border border-white/10 bg-black/25 p-6">

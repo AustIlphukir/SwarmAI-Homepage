@@ -46,19 +46,26 @@ function InfoCard({
 function LayerCard({
   title,
   desc,
+  deliveryLine,
   videoSrc,
+  videoCaption,
   bullets,
 }: {
   title: string;
   desc: string;
+  deliveryLine: string;
   videoSrc: string;
+  videoCaption: string;
   bullets: string[];
 }) {
   return (
     <div className="group rounded-2xl border border-white/10 bg-gradient-to-b from-card to-card/70 p-6 text-left shadow-[0_24px_64px_rgba(0,0,0,0.32)] transition-all duration-300 hover:-translate-y-1 hover:border-accent1/40">
       <h3 className="text-xl font-semibold text-textPrimary">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-textSecondary">{desc}</p>
-      <div className="mt-4 flex justify-center rounded-xl border border-white/10 bg-black/20 p-3">
+      <p className="mt-2 text-xs text-textSecondary">
+        <span className="font-medium text-textPrimary">Delivered as:</span> {deliveryLine}
+      </p>
+      <div className="mt-4 flex flex-col items-center rounded-xl border border-white/10 bg-black/20 p-3">
         <video
           className="h-[220px] w-full rounded-md object-cover"
           autoPlay
@@ -70,6 +77,9 @@ function LayerCard({
         >
           <source src={videoSrc} type="video/mp4" />
         </video>
+        <p className="mt-2 text-center text-[11px] leading-snug text-textSecondary">
+          {videoCaption}
+        </p>
       </div>
       <ul className="mt-4 space-y-2 text-sm text-textSecondary">
         {bullets.map((bullet) => (
@@ -98,46 +108,16 @@ export default function ProductPage() {
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-textSecondary">
           Swarm.ai connects optical sensing, edge AI, and distributed command intelligence into one resilient stack built for operational environments.
         </p>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-textSecondary">
+          Swarm.ai is a modular perception platform composed of deployable sensor nodes, edge AI software, and a distributed intelligence layer.
+        </p>
       </section>
 
       <Section
-        title="The Three Layers of Swarm.ai"
-        subtitle="Conceptual overview of sensing, edge perception, and distributed intelligence."
+        title="Product Architecture: Three Deployable Layers"
+        subtitle="Deployable sensing, edge perception, and distributed intelligence—built for operational environments."
         wrapperClassName="pt-16"
       >
-        <div className="grid gap-6 md:grid-cols-3">
-          <LayerCard
-            title="Mantyx Sensor Layer"
-            desc="High-performance EO/IR sensing for detection, identification, and tracking of small aerial objects in real-world conditions."
-            videoSrc="/videos/source.mp4"
-            bullets={[
-              'Day, night, and adverse-weather operation',
-              'Long-range passive detection',
-              'Designed for scalable deployment',
-            ]}
-          />
-          <LayerCard
-            title="Myrix Edge Perception"
-            desc="On-device AI processes sensor data locally and synchronizes mission-critical insights across the grid."
-            videoSrc="/videos/Drone_Animation_From_Thermal_Image.mp4"
-            bullets={[
-              'Real-time multi-sensor fusion',
-              '6D tracking and trajectory estimation',
-              'Low latency and low-bandwidth operation',
-            ]}
-          />
-          <LayerCard
-            title="Nexus Command Intelligence"
-            desc="Distributed intelligence aggregates local observations and enables coordinated response without centralized fragility."
-            videoSrc="/videos/source-3.mp4"
-            bullets={[
-              'Local fusion with global consistency',
-              'Model updates from field data',
-              'Interfaces for existing C2 and safety systems',
-            ]}
-          />
-        </div>
-
         <div className="mt-8 rounded-2xl border border-white/10 bg-black/30 p-6">
           <div className="grid items-center gap-4 md:grid-cols-3">
             <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
@@ -150,19 +130,62 @@ export default function ProductPage() {
             </div>
             <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
               <Network className="mx-auto h-6 w-6 text-accentCool2" />
-              <p className="mt-2 text-sm font-medium">Distributed Command Layer</p>
+              <p className="mt-2 text-sm font-medium">Swarm Interception Layer</p>
             </div>
           </div>
           <p className="mt-3 text-center text-xs text-textSecondary">
             High-level system flow from optical sensing to edge inference and network-level intelligence.
           </p>
         </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          <LayerCard
+            title="Mantyx Sensor Layer"
+            desc="High-performance EO/IR sensing for detection, identification, and tracking of small aerial objects in real-world conditions."
+            deliveryLine="Integrated EO/IR sensor packages or retrofit kits for existing optics and mounts."
+            videoSrc="/videos/source.mp4"
+            videoCaption="Example: passive EO/IR sensing for detection and identification at range."
+            bullets={[
+              'Day, night, and adverse-weather operation',
+              'Long-range passive detection',
+              'Designed for scalable deployment',
+            ]}
+          />
+          <LayerCard
+            title="Myrix Edge Perception"
+            desc="On-device AI processes sensor data locally and synchronizes mission-critical insights across the grid."
+            deliveryLine="Runs on embedded GPU / edge compute (airborne or stationary), operating offline-capable."
+            videoSrc="/videos/Drone_Animation_From_Thermal_Image.mp4"
+            videoCaption="Example: on-device tracking and trajectory estimation from thermal input."
+            bullets={[
+              'Real-time multi-sensor fusion',
+              '6D tracking and trajectory estimation',
+              'Low latency and low-bandwidth operation',
+            ]}
+          />
+          <LayerCard
+            title="Nexus Command Intelligence"
+            desc="Distributed intelligence aggregates local observations and enables coordinated response without centralized fragility."
+            deliveryLine="Interfaces for existing C2 / safety systems, or standalone dashboards and APIs."
+            videoSrc="/videos/source-3.mp4"
+            videoCaption="Example: multi-node fusion and operator-facing command intelligence."
+            bullets={[
+              'Local fusion with global consistency',
+              'Model updates from field data',
+              'Interfaces for existing C2 and safety systems',
+            ]}
+          />
+        </div>
+
+        
       </Section>
 
       <Section
         title="Why classical systems fail in low-altitude airspace"
         subtitle="Defending airspace today is primarily a data and perception challenge."
       >
+        <p className="mb-6 max-w-3xl text-sm leading-relaxed text-textSecondary">
+          Most legacy systems fail not because response options are missing, but because perception breaks first—detection, tracking, and identification under real operational constraints.
+        </p>
         <div className="grid gap-4 md:grid-cols-2">
           <InfoCard
             icon={<Target className="h-5 w-5" />}
@@ -191,6 +214,9 @@ export default function ProductPage() {
         title="What makes Swarm.ai fundamentally different"
         subtitle="Built around edge autonomy, decentralized intelligence, and continuous learning."
       >
+        <p className="mb-6 max-w-3xl text-sm leading-relaxed text-textSecondary">
+          Swarm.ai is not a radar replacement, a single sensor, or a centralized analytics backend—it is a perception-native system designed from the edge upward.
+        </p>
         <div className="grid gap-4 md:grid-cols-2">
           <InfoCard
             icon={<Network className="h-5 w-5" />}
@@ -217,7 +243,7 @@ export default function ProductPage() {
 
       <Section
         title="Designed for critical and regulated environments"
-        subtitle="Operational fit across infrastructure, transport, and defense contexts."
+        subtitle="Designed to meet operational, safety, and integration constraints in regulated environments."
       >
         <div className="grid gap-4 md:grid-cols-4">
           <InfoCard
@@ -271,26 +297,41 @@ export default function ProductPage() {
         </div>
       </Section>
 
+      <Section
+        title="Delivered as"
+        subtitle="Clear delivery options for evaluation and integration."
+      >
+        <div className="grid gap-4 md:grid-cols-3">
+          <InfoCard
+            icon={<Shield className="h-5 w-5" />}
+            title="Deployable edge stack"
+            desc="Sensor + edge perception software delivered as modular nodes for stationary or airborne use."
+          />
+          <InfoCard
+            icon={<Network className="h-5 w-5" />}
+            title="Integration package"
+            desc="APIs and interfaces to connect into existing C2, safety systems, and monitoring stacks."
+          />
+          <InfoCard
+            icon={<CheckCircle2 className="h-5 w-5" />}
+            title="Evaluation programs"
+            desc="Structured assessments with qualified partners and operators to validate performance in controlled settings."
+          />
+        </div>
+      </Section>
+
       <div className="mt-8 flex flex-wrap items-center justify-center gap-5 text-sm">
         <Link href="/" className="rounded-lg border border-white/20 px-4 py-2 text-textPrimary transition-colors hover:border-accentCool/50 hover:text-accentCool">
           Back to Home
         </Link>
         <Link
-          href="https://3dtwin.3dwe.org/burda_senatorre.html"
+          href="/contact"
           className="inline-flex items-center gap-2 rounded-lg border border-accent1/40 bg-accent1/10 px-4 py-2 text-accent1 transition-colors hover:bg-accent1/20"
         >
-          View 3D Reconstruction Demo
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-        <Link
-          href="/pose"
-          className="inline-flex items-center gap-2 rounded-lg border border-accent1/40 bg-accent1/10 px-4 py-2 text-accent1 transition-colors hover:bg-accent1/20"
-        >
-          View 6D Pose Estimation
+          Contact us
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
     </div>
   );
 }
-

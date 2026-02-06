@@ -19,86 +19,106 @@ export default function ServicesPage() {
           
         </p>
       </section>
-      <div className="mt-8 rounded-2xl border border-white/10 bg-black/30 p-6">
-        <div className="grid gap-6 md:grid-cols-[260px_1fr] md:items-start">
-          <div className="space-y-4">
-            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
-              <Radar className="mx-auto h-6 w-6 text-accentCool" />
-              <p className="mt-2 text-sm font-medium">Sensor Input</p>
-            </div>
-            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
-              <Brain className="mx-auto h-6 w-6 text-accent1" />
-              <p className="mt-2 text-sm font-medium">Edge Perception</p>
-            </div>
-            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
-              <Network className="mx-auto h-6 w-6 text-accentCool2" />
-              <p className="mt-2 text-sm font-medium">Distributed Command Layer</p>
-            </div>
-          </div>
-          <div className="rounded-xl border border-white/10 bg-card/60 p-5">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-textSecondary">Claimed Skills</h3>
-            <div className="mt-4 grid gap-3">
-              <div>
-                <p className="text-sm font-semibold text-accentCool">Sensor Input</p>
-                <p className="mt-1 text-sm text-textSecondary">
-                  EO/IR camera integration, multi-sensor time sync, and robust signal conditioning for noisy operational environments.
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-accent1">Edge Perception</p>
-                <p className="mt-1 text-sm text-textSecondary">
-                  On-device detection, classification, and 3D tracking optimized for low-latency inference on constrained hardware.
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-accentCool2">Distributed Command Layer</p>
-                <p className="mt-1 text-sm text-textSecondary">
-                  Networked command-and-control orchestration, cross-node data fusion, and resilient decision support at system level.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p className="mt-3 text-center text-xs text-textSecondary">
-          High-level system flow from optical sensing to edge inference and network-level intelligence.
-        </p>
-      </div>
       <Section
         title="Services"
-        subtitle="Concise, practical services: Edge AI, 3D perception, and consulting for real‑world deployments."
+        subtitle="Practical services for deployment-grade edge perception systems."
       >
         <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+          <div className="mt-6 grid grid-cols-1 gap-4">
             <FeatureCard
               image="/images/f47e5700-e257-478f-9faf-cd859da799d9.png"
-              title="Optical Warning and DefenCe"
-              desc="EO/IR optics, edge AI, and C2 integration to detect and identify UAVs. We support civil and military vendors integrating into real systems."
+              title="Optical Early Warning and Target Identification"
+              desc="Edge EO/IR detection, classification, and tracking for small aerial threats (e.g., UAVs). Built for integration into existing sensor networks and C2 interfaces, with low false-alarm operation under real conditions."
+              layout="horizontal"
+              boxed
             />
             <FeatureCard
               video="/videos/PoseEstimationAndTrackingSUV.mp4"
-              title="3D Tracking"
-              desc="Robust 3D multi-object tracking and trajectory prediction for drones and other aerial targets, optimized for edge deployment with low latency. Any object class can be tracked, from drones to birds or even ground vehicles - no retraining on new objects necessary."
+              title="Robust Multi-Object 3D Tracking"
+              desc="Real-time 3D tracking and trajectory estimation from monocular or multi-view vision—airborne and ground targets. Designed for low latency on edge hardware and adaptable across object types without retraining per class."
+              layout="horizontal"
+              boxed
             />
             <FeatureCard
               image="/images/db3eee31-bb8d-4c19-a8ba-1f1990bf67b6.png"
-              title="3D Perception and Reconstruction on the Edge"
-              desc="Process video on the edge to minimize data transfer—send results, not raw streams. From compact outputs we reconstruct photorealistic 3D scenes. All with general purpose AI methods that can be adapted to new use cases."
+              title="Edge-Based 3D Scene Understanding"
+              desc="On-edge 3D reconstruction and semantic scene understanding to minimize data transfer. We send compact representations and mission outputs instead of raw video, enabling bandwidth-efficient, near-real-time situational awareness."
+              layout="horizontal"
+              boxed
             />
             <FeatureCard
               video="/images/Twin.gif"
-              title="Real-world 3D Vision applications"
-              desc="Hands‑on consulting for advanced 3D computer vision: backbone design, LoRA training, tracking, and state‑of‑the‑art research—from prototype to production."
+              title="Applied 3D Computer Vision Consulting"
+              desc="Hands-on engineering from feasibility to deployment: perception stack design, edge optimization, data strategy, and field iteration. Focused on operational constraints, integration into existing systems, and measurable performance."
+              layout="horizontal"
+              boxed
             />
           </div>
 
-          <div className="mt-8 flex items-center justify-center">
+          <div className="mt-8 rounded-xl border border-white/10 bg-card/40 px-5 py-4 text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.12em] text-textSecondary">From sensor to decision - end-to-end systems</p>
+            <p className="mt-2 text-sm text-textSecondary">Optical sensing to edge inference to distributed fusion to human decision support.</p>
+          </div>
+
+          <div className="mt-8 flex flex-col items-center justify-center gap-2 text-center">
+            <p className="text-base font-semibold text-textPrimary">Discuss your operational use case</p>
+            <p className="text-sm text-textSecondary">We work with defence, security, and industrial partners on concrete deployments, not slide decks.</p>
             <Link href="/contact" className="text-accent1 hover:underline font-medium">
-              Request a project — let’s discuss your use case →
+              Contact us to start the discussion →
             </Link>
           </div>
         </div>
       </Section>
 
+      <Section title="Capabilities">
+        <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
+          <div className="grid gap-6 md:grid-cols-[260px_1fr] md:items-start">
+            <div className="space-y-4">
+              <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
+                <Radar className="mx-auto h-6 w-6 text-accentCool" />
+                <p className="mt-2 text-sm font-medium">Sensor Input</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
+                <Brain className="mx-auto h-6 w-6 text-accent1" />
+                <p className="mt-2 text-sm font-medium">Edge Perception</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
+                <Network className="mx-auto h-6 w-6 text-accentCool2" />
+                <p className="mt-2 text-sm font-medium">Distributed Command Layer</p>
+              </div>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-card/60 p-5">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-textSecondary">
+                Capabilities overview
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-textSecondary">
+                A compact snapshot of what we deliver across sensing, edge perception, and distributed command intelligence.
+              </p>
+
+              <div className="mt-4 grid gap-3 text-sm text-textSecondary">
+                <div className="rounded-lg border border-white/10 bg-black/20 p-4">
+                  <p className="text-textPrimary">
+                    <span className="font-semibold">Sensing integration:</span> EO/IR (MWIR/LWIR) and auxiliary sensors with time sync, calibration, and robust pipelines under vibration, low SNR, and bandwidth constraints.
+                  </p>
+                </div>
+                <div className="rounded-lg border border-white/10 bg-black/20 p-4">
+                  <p className="text-textPrimary">
+                    <span className="font-semibold">Edge perception:</span> On-device detection, classification, pose estimation, and 3D tracking optimized for low latency on embedded GPU and offline-capable operation.
+                  </p>
+                </div>
+                <div className="rounded-lg border border-white/10 bg-black/20 p-4">
+                  <p className="text-textPrimary">
+                    <span className="font-semibold">Distributed fusion:</span> Multi-node coordination, cross-sensor track fusion, and API-first interfaces designed for degraded networks and incremental rollout into existing C2 systems.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p className="mt-3 text-center text-xs text-textSecondary">
+            High-level system flow from optical sensing to edge inference and network-level intelligence.
+          </p>
+        </div>
+      </Section>
 
       <Section
         title="Markets"
