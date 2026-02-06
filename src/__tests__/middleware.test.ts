@@ -35,10 +35,10 @@ describe('middleware', () => {
     expect(res2).toEqual({ next: true });
   });
 
-  test('redirects unauthenticated subpage to / with redirect query', () => {
+  test('allows unauthenticated access to contact page', () => {
     const req = makeReq('/contact');
     const res = middlewareModule.middleware(req as any);
-    expect(res).toEqual(expect.objectContaining({ redirect: true }));
+    expect(res).toEqual({ next: true });
   });
 
   test('allows when cookie present', () => {

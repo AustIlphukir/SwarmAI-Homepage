@@ -20,18 +20,43 @@ export default function ServicesPage() {
         </p>
       </section>
       <div className="mt-8 rounded-2xl border border-white/10 bg-black/30 p-6">
-        <div className="grid items-center gap-4 md:grid-cols-3">
-          <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
-            <Radar className="mx-auto h-6 w-6 text-accentCool" />
-            <p className="mt-2 text-sm font-medium">Sensor Input</p>
+        <div className="grid gap-6 md:grid-cols-[260px_1fr] md:items-start">
+          <div className="space-y-4">
+            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
+              <Radar className="mx-auto h-6 w-6 text-accentCool" />
+              <p className="mt-2 text-sm font-medium">Sensor Input</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
+              <Brain className="mx-auto h-6 w-6 text-accent1" />
+              <p className="mt-2 text-sm font-medium">Edge Perception</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
+              <Network className="mx-auto h-6 w-6 text-accentCool2" />
+              <p className="mt-2 text-sm font-medium">Distributed Command Layer</p>
+            </div>
           </div>
-          <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
-            <Brain className="mx-auto h-6 w-6 text-accent1" />
-            <p className="mt-2 text-sm font-medium">Edge Perception</p>
-          </div>
-          <div className="rounded-xl border border-white/10 bg-card/70 p-4 text-center">
-            <Network className="mx-auto h-6 w-6 text-accentCool2" />
-            <p className="mt-2 text-sm font-medium">Distributed Command Layer</p>
+          <div className="rounded-xl border border-white/10 bg-card/60 p-5">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-textSecondary">Claimed Skills</h3>
+            <div className="mt-4 grid gap-3">
+              <div>
+                <p className="text-sm font-semibold text-accentCool">Sensor Input</p>
+                <p className="mt-1 text-sm text-textSecondary">
+                  EO/IR camera integration, multi-sensor time sync, and robust signal conditioning for noisy operational environments.
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-accent1">Edge Perception</p>
+                <p className="mt-1 text-sm text-textSecondary">
+                  On-device detection, classification, and 3D tracking optimized for low-latency inference on constrained hardware.
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-accentCool2">Distributed Command Layer</p>
+                <p className="mt-1 text-sm text-textSecondary">
+                  Networked command-and-control orchestration, cross-node data fusion, and resilient decision support at system level.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
         <p className="mt-3 text-center text-xs text-textSecondary">

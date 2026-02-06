@@ -46,19 +46,20 @@ export default function AboutPage() {
           </div>
 
           <Section title="Team" subtitle="">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <FeatureCard icon={<>👨‍💼</>} title="Dr. Lukas Karge" desc="CEO" image="/images/team/Lukas.png" />
                 <FeatureCard icon={<>👨‍💻</>} title="Prof. Benjamin Busam" desc="CTO" image="/images/team/Ben.jpg" />
                 <FeatureCard icon={<>🔬</>} title="Michael Greza" desc="AI researcher" image="/images/team/Michael.jpg" />
                 <FeatureCard icon={<>🏗️</>} title="Mert Kiray" desc="AI Architect" image="/images/team/Mert.jpg" />
                 <FeatureCard icon={<>🔬</>} title="Yordanka Velikova" desc="AI researcher" image="/images/team/Dani.png" />
-        </div>
+              </div>
+            </div>
 
-        <div className="mt-6 text-center">
-          <Link href="#consortium" className="text-accent1 hover:underline">Meet the extended network &rarr;</Link>
-        </div>
-        
-    </Section>
+            <div className="mt-6 text-center">
+              <Link href="#consortium" className="text-accent1 hover:underline">Meet the extended network &rarr;</Link>
+            </div>
+          </Section>
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-5 text-sm">
         <Link href="/" className="rounded-lg border border-white/20 px-4 py-2 text-textPrimary transition-colors hover:border-accentCool/50 hover:text-accentCool">

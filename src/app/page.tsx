@@ -165,6 +165,12 @@ export default function HomePage() {
   if (!unlocked) {
     return (
       <div className="py-0 relative overflow-hidden flex items-center justify-center bg-background">
+        <div className="hero-bg-elements">
+          <div className="hero-bg-lines" />
+          <div className="hero-bg-glow-top" />
+          <div className="hero-bg-glow-bottom" />
+          <div className="hero-bg-fade" />
+        </div>
 
         {/* Modal (only if user clicks CTA) */}
               {showModal && (
@@ -343,6 +349,12 @@ export default function HomePage() {
           >
             Unlock
           </button>
+          <Link
+            href="/contact"
+            className="mt-4 inline-block text-base font-semibold text-accent1 hover:underline"
+          >
+            Interested? Contact us
+          </Link>
         </div>
       </div>
     );
@@ -365,11 +377,13 @@ export default function HomePage() {
           >
             <source src="/videos/source-3.mov" type="video/mp4" />
           </video>
+          <div className="hero-bg-lines" />
+          <div className="hero-bg-glow-top" />
+          <div className="hero-bg-glow-bottom" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-background/90" />
         </div>
         <div className="py-0 relative overflow-hidden flex flex-col items-center justify-center text-center px-4 z-10">
           <div className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-textSecondary mb-4">
-            swarm.vision
           </div>
           <h1 className="text-5xl sm:text-6xl font-bold mb-4">
             <span className="text-accent1 font-semibold">Perception Systems For European Defence</span>
@@ -415,12 +429,12 @@ export default function HomePage() {
               alt="Air domain drone defense"
               width={1200}
               height={700}
-              className="h-48 w-full object-cover"
+              className="h-48 w-full object-cover brightness-60"
             />
             <div className="p-6">
               <h3 className="text-2xl font-semibold mb-2">Air</h3>
               <p className="text-textSecondary">
-                Detect small flying drones early. Deployable on drones to enable evasive maneuvers and fast response.
+                Detect small flying drones early. Ground-to-drone or drone-to-drone detection.
               </p>
             </div>
           </div>
@@ -430,7 +444,7 @@ export default function HomePage() {
               alt="Land domain drone defense"
               width={1200}
               height={700}
-              className="h-48 w-full object-cover"
+              className="h-48 w-full object-cover brightness-60"
             />
             <div className="p-6">
               <h3 className="text-2xl font-semibold mb-2">Land</h3>
@@ -445,7 +459,7 @@ export default function HomePage() {
               alt="Sea domain drone defense"
               width={1200}
               height={700}
-              className="h-48 w-full object-cover"
+              className="h-48 w-full object-cover brightness-60"
             />
             <div className="p-6">
               <h3 className="text-2xl font-semibold mb-2">Sea</h3>
@@ -467,20 +481,110 @@ export default function HomePage() {
         }
         wrapperClassName="border-t border-[#495a47]/55 bg-gradient-to-b from-[#171d16]/75 to-[#121813]/75"
       >
-        <div className="grid md:grid-cols-4 gap-4 mt-6">
-          <FeatureCard icon={<Eye className="w-7 h-7 mx-auto text-accent1" />} title="360° RGB & TIR" desc="24/7 fully-automated surveillance of the air space." />
-          <FeatureCard icon={<Cpu className="w-7 h-7 mx-auto text-accent1" />} title="Real-time Edge CV" desc="Compute at the sensor edge, with minimal data footprint." />
-          <FeatureCard icon={<Network className="w-7 h-7 mx-auto text-accent1" />} title="Distributed" desc="Robust, fault-tolerant, and highly scalable. All compute is done at the sensor mesh." />
-          <FeatureCard icon={<Shield className="w-7 h-7 mx-auto text-accent1" />} title="Resilient by design" desc="Built for mission-critical environments. Redundant to sensor losses." />
+        <div className="mt-6 rounded-2xl border border-white/10 bg-black/25 p-6">
+          <div className="grid md:grid-cols-4 gap-4">
+            <FeatureCard icon={<Eye className="w-7 h-7 mx-auto text-accent1" />} title="360° RGB & TIR" desc="24/7 fully-automated surveillance of the air space." />
+            <FeatureCard icon={<Cpu className="w-7 h-7 mx-auto text-accent1" />} title="Real-time Edge CV" desc="Compute at the sensor edge, with minimal data footprint." />
+            <FeatureCard icon={<Network className="w-7 h-7 mx-auto text-accent1" />} title="Distributed" desc="Robust, fault-tolerant, and highly scalable. All compute is done at the sensor mesh." />
+            <FeatureCard icon={<Shield className="w-7 h-7 mx-auto text-accent1" />} title="Resilient by design" desc="Built for mission-critical environments. Redundant to sensor losses." />
+          </div>
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/tech"
+              className="inline-flex items-center gap-2 px-5 py-3 bg-card rounded-lg hover:bg-card/80 transition-colors text-sm font-semibold"
+            >
+              Explore Core Tech
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/tech"
-            className="inline-flex items-center gap-2 px-5 py-3 bg-card rounded-lg hover:bg-card/80 transition-colors text-sm font-semibold"
-          >
-            Explore Core Tech
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+      </Section>
+
+      <Section
+        title="The Swarm.ai technology"
+        subtitle="From raw sensing to mission-level autonomy in a staged, deployable architecture."
+        wrapperClassName="border-t border-[#4a5a46]/55 bg-gradient-to-b from-[#181f17]/75 to-[#111712]/75"
+      >
+        <div className="mt-6 rounded-2xl border border-white/10 bg-black/30 p-6">
+          <div className="relative hidden md:block">
+            <div className="absolute left-0 right-0 top-5 h-[2px] rounded-full bg-white/15" />
+            <div className="absolute left-0 top-5 h-[2px] w-1/2 rounded-full bg-accent1" />
+            <div className="grid grid-cols-7 gap-3">
+              <div className="relative pt-10">
+                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full bg-accent1" />
+                <div className="rounded-xl border border-white/10 bg-card/60 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">01</p>
+                  <p className="mt-1 text-sm font-medium">360° sensor</p>
+                </div>
+              </div>
+              <div className="relative pt-10">
+                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full bg-accent1" />
+                <div className="rounded-xl border border-white/10 bg-card/60 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">02</p>
+                  <p className="mt-1 text-sm font-medium">6D unknown object identification and tracking</p>
+                </div>
+              </div>
+              <div className="relative pt-10">
+                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full bg-accent1" />
+                <div className="rounded-xl border border-white/10 bg-card/60 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">03</p>
+                  <p className="mt-1 text-sm font-medium">Distributed Edge Network</p>
+                </div>
+              </div>
+              <div className="relative pt-10">
+                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full bg-accent1" />
+                <div className="rounded-xl border border-white/10 bg-card/60 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">04</p>
+                  <p className="mt-1 text-sm font-medium">Military grade 3D-printable drone platform</p>
+                </div>
+              </div>
+              <div className="relative pt-10">
+                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full border border-white/35 bg-background" />
+                <div className="rounded-xl border border-white/10 bg-card/40 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">05</p>
+                  <p className="mt-1 text-sm font-medium text-textSecondary">Swarm Intelligence Layer</p>
+                </div>
+              </div>
+              <div className="relative pt-10">
+                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full border border-white/35 bg-background" />
+                <div className="rounded-xl border border-white/10 bg-card/40 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">06</p>
+                  <p className="mt-1 text-sm font-medium text-textSecondary">autonomous impact and parachute deployment</p>
+                </div>
+              </div>
+              <div className="relative pt-10">
+                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full border border-white/35 bg-background" />
+                <div className="rounded-xl border border-white/10 bg-card/40 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">07</p>
+                  <p className="mt-1 text-sm font-medium text-textSecondary">Optimize for mobility and fast deployment</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-3 md:hidden">
+            <div className="rounded-xl border border-white/10 bg-card/60 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">01 360° sensor</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-card/60 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">02 6D unknown object identification and tracking</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-card/60 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">03 Distributed Edge Network</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-card/60 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">04 military grade printable drone supplier</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-card/40 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">05 Swarm Intelligence Layer</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-card/40 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">06 autonomous impact and parachute deployment</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-card/40 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">07 Optimize for mobility and fast deployment</p>
+            </div>
+          </div>
         </div>
       </Section>
 
@@ -490,53 +594,55 @@ export default function HomePage() {
         subtitle="Focused on capabilities and a proven track record."
         wrapperClassName="border-t border-[#4d5f48]/55 bg-gradient-to-b from-[#1a1f18]/75 to-[#141912]/75"
       >
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-          <div className="bg-card rounded-xl p-5">
-            <div className="text-sm text-textSecondary">Research</div>
-            <div className="mt-2 font-semibold">CVPR‑Track‑Record in Computer Vision</div>
-            <div className="mt-2 text-sm text-textSecondary">
-              Publications and results from top-tier conferences.
+        <div className="mt-6 rounded-2xl border border-white/10 bg-black/25 p-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-card rounded-xl p-5">
+              <div className="text-sm text-textSecondary">Research</div>
+              <div className="mt-2 font-semibold">CVPR‑Track‑Record in Computer Vision</div>
+              <div className="mt-2 text-sm text-textSecondary">
+                Publications and results from top-tier conferences.
+              </div>
+            </div>
+            <div className="bg-card rounded-xl p-5">
+              <div className="text-sm text-textSecondary">Autonomous Systems</div>
+              <div className="mt-2 font-semibold">Industry-proven autonomy expertise</div>
+              <div className="mt-2 text-sm text-textSecondary">
+                Robustness, safety, and integration in real deployments.
+              </div>
+            </div>
+            <div className="bg-card rounded-xl p-5">
+              <div className="text-sm text-textSecondary">Experience</div>
+              <div className="mt-2 font-semibold">Experience from Huawei &amp; Mercedes-Benz</div>
+              <div className="mt-2 text-sm text-textSecondary">
+                Scaling, product leadership, and international execution.
+              </div>
+            </div>
+            <div className="bg-card rounded-xl p-5">
+              <div className="text-sm text-textSecondary">Remote Sensing</div>
+              <div className="mt-2 font-semibold">Top-ranked German team</div>
+              <div className="mt-2 text-sm text-textSecondary">
+                According to ShanghaiRanking GRAS 2020 (AS0224).
+                {" "}
+                <a
+                  href="https://www.shanghairanking.com/rankings/gras/2020/AS0224"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent1 hover:underline"
+                >
+                  Source
+                </a>
+              </div>
             </div>
           </div>
-          <div className="bg-card rounded-xl p-5">
-            <div className="text-sm text-textSecondary">Autonomous Systems</div>
-            <div className="mt-2 font-semibold">Industry-proven autonomy expertise</div>
-            <div className="mt-2 text-sm text-textSecondary">
-              Robustness, safety, and integration in real deployments.
-            </div>
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 px-5 py-3 bg-card rounded-lg hover:bg-card/80 transition-colors text-sm font-semibold"
+            >
+              Get to know us
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
-          <div className="bg-card rounded-xl p-5">
-            <div className="text-sm text-textSecondary">Experience</div>
-            <div className="mt-2 font-semibold">Experience from Huawei &amp; Mercedes-Benz</div>
-            <div className="mt-2 text-sm text-textSecondary">
-              Scaling, product leadership, and international execution.
-            </div>
-          </div>
-          <div className="bg-card rounded-xl p-5">
-            <div className="text-sm text-textSecondary">Remote Sensing</div>
-            <div className="mt-2 font-semibold">Top-ranked German team</div>
-            <div className="mt-2 text-sm text-textSecondary">
-              According to ShanghaiRanking GRAS 2020 (AS0224).
-              {" "}
-              <a
-                href="https://www.shanghairanking.com/rankings/gras/2020/AS0224"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-accent1 hover:underline"
-              >
-                Source
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/team"
-            className="inline-flex items-center gap-2 px-5 py-3 bg-card rounded-lg hover:bg-card/80 transition-colors text-sm font-semibold"
-          >
-            Get to know us
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
       </Section>
 
