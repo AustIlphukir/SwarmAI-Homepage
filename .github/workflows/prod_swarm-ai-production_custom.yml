@@ -70,7 +70,10 @@ jobs:
       - name: Copy standalone output
         run: |
           mkdir -p deploy
+<<<<<<<< HEAD:.github/workflows/prod_swarm-ai-production.yml
+========
           mkdir -p deploy/.next
+>>>>>>>> prod:.github/workflows/prod_swarm-ai-production_custom.yml
           cp -r .next/standalone/* ./deploy/
           cp -r .next/static ./deploy/.next/static
           cp -r public ./deploy/public
@@ -140,4 +143,8 @@ jobs:
         run: |
           az webapp config set \
             --name ${{ secrets.AZURE_WEB_APP_NAME }} \
+<<<<<<<< HEAD:.github/workflows/prod_swarm-ai-production.yml
             --startup-file "node server.js"
+========
+            --startup-file "node server.js"
+>>>>>>>> prod:.github/workflows/prod_swarm-ai-production_custom.yml
