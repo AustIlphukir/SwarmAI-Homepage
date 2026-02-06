@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Sea</title>
+  <desc id="desc">Basic sea illustration with waves and a patrol boat silhouette.</desc>
+  <rect width="1200" height="700" fill="#0f172a"/>
+  <rect y="320" width="1200" height="380" fill="#0c4a6e"/>
+
+  <circle cx="980" cy="110" r="52" fill="#e2e8f0"/>
+  <path d="M120 430 Q 180 390 240 430 T 360 430 T 480 430 T 600 430 T 720 430 T 840 430 T 960 430 T 1080 430"
+        fill="none" stroke="#7dd3fc" stroke-width="10"/>
+  <path d="M80 500 Q 140 460 200 500 T 320 500 T 440 500 T 560 500 T 680 500 T 800 500 T 920 500 T 1040 500"
+        fill="none" stroke="#38bdf8" stroke-width="10"/>
+
+  <polygon points="450,360 760,360 700,420 500,420" fill="#e5e7eb"/>
+  <rect x="560" y="320" width="70" height="36" fill="#cbd5e1"/>
+  <rect x="622" y="292" width="8" height="28" fill="#cbd5e1"/>
+  <polygon points="630,292 690,310 630,328" fill="#ef4444"/>
+
+  <text x="60" y="640" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="64" font-weight="700">SEA</text>
+</svg>
