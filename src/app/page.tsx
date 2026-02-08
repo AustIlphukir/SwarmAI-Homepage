@@ -376,7 +376,7 @@ export default function HomePage() {
             
           </h1>
           <p className="text-lg md:text-xl text-textSecondary mb-4 max-w-3xl">
-            Protect airspace 24/7 with AI-powered perception at the edge and a distributed using propreritary mirror-power optical sensors and fault-tolerant, portable sensor architecture.
+            Protect your airspace 24/7 with AI-powered perception on a reliable and portable sensor architecture.
           </p>
           
           <Link
@@ -405,7 +405,7 @@ export default function HomePage() {
 
       <Section
         title="Defend against drones"
-        subtitle="Three operational domains for modern counter-drone defense, powered by resilient AI-based sensing."
+        subtitle="Robust drone detection and identification across three domains."
         wrapperClassName="border-t border-[#465644]/55 bg-gradient-to-b from-[#141c16]/75 to-[#101713]/75"
       >
         <div className="grid md:grid-cols-3 gap-6 mt-6">
@@ -461,7 +461,7 @@ export default function HomePage() {
         title="Core tech"
         subtitle={
           <>
-            A hardware stack of sensors and edge nodes, built for real-time perception without data bottlenecks,
+            A hardware stack of sensors and edge nodes, built for real-time perception without data bottlenecks, and
             paired with cutting-edge AI research. 
           </>
         }
@@ -493,7 +493,7 @@ export default function HomePage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
           <div className="bg-card rounded-xl p-5">
             <div className="text-sm text-textSecondary">Research</div>
-            <div className="mt-2 font-semibold">CVPR‑Track‑Record in Computer Vision</div>
+            <div className="mt-2 font-semibold">CVPR Track‑Record in Computer Vision</div>
             <div className="mt-2 text-sm text-textSecondary">
               Publications and results from top-tier conferences.
             </div>
