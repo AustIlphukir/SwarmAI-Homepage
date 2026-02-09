@@ -33,11 +33,13 @@ export default function Navbar() {
   // itself links back to the home page, so we omit an explicit
   // "Home" entry.
   const links = [
-    { href: '/tech', label: 'Tech' },
     { href: '/product', label: 'Product' },
+    { href: '/tech', label: 'Tech' },
+    { href: '/markets', label: 'Markets' },
     { href: '/services', label: 'Services' },
+    { href: '/resources', label: 'Resources' },
     { href: '/about', label: 'About Us' },
-    { href: '/contact', label: 'Contact' }
+    { href: '/contact', label: 'Contact' },
   ];
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur border-b border-card/50 bg-card/70">

@@ -22,8 +22,8 @@ export default function FeatureCard({
   return (
     <div
       className={[
-        isHorizontal ? 'flex items-start gap-4 p-4' : 'relative mx-auto max-w-7xl overflow-hidden px-4 py-14 sm:px-6 lg:px-8',
-        boxed ? 'rounded-xl border border-white/10 bg-card/50' : '',
+        isHorizontal ? 'flex items-start gap-4 p-4' : 'flex flex-col items-center gap-3 p-5 text-center',
+        boxed || !isHorizontal ? 'rounded-xl border border-white/10 bg-card/50' : '',
       ].join(' ')}
     >
       <div className={isHorizontal ? 'shrink-0' : 'mb-3'}>

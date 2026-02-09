@@ -1,61 +1,180 @@
 "use client";
+
 import Link from 'next/link';
+import { ArrowRight, Building2, Factory, Landmark, Shield, TowerControl, Users } from 'lucide-react';
 import Section from '../../components/Section';
-import { ArrowRight } from 'lucide-react';
+import CtaStrip from '../../components/CtaStrip';
 
-export default function MarketsPage() {
+function ScenarioCard({
+  title,
+  subtitle,
+  icon,
+  href,
+  bullets,
+}: {
+  title: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  href: string;
+  bullets: string[];
+}) {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-16">
-      <Section
-        title="Markets"
-        subtitle="Unsere Drohnenabwehr adressiert zivile und militaerische Einsatzfelder, in denen schnelle Lageerkennung und robuste Abwehr entscheidend sind."
-      >
-        <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div id="civil" className="bg-card rounded-2xl p-8 shadow-md border border-card/60">
-            <div className="text-xs tracking-widest uppercase text-textSecondary mb-2">Civilian Defence</div>
-            <h3 className="text-2xl font-semibold mb-3">Zivile Schutzszenarien</h3>
-            <p className="text-textSecondary mb-4">
-              Fest installierte Systeme, die ab Bodennaehe den Luftraum weitraeumig ueberwachen - Tag &amp; Nacht verfuegbar.
-            </p>
-            <ul className="text-sm text-textSecondary grid gap-2">
-              <li>24/7/365 online mit automatisierter Alarmierung.</li>
-              <li>Edge Compute fuer CV-Systeme und Datenschutz by design.</li>
-              <li>Soft-Kill (non-ballistic) fuer kritische Infrastrukturen.</li>
-              <li>Skalierbare Sensor-Arrays fuer Flughaefen, Energieanlagen, urbane Zonen.</li>
-            </ul>
-            <div className="mt-6 flex flex-wrap gap-4">
-              <Link href="/services" className="inline-flex items-center gap-2 text-accent1 font-semibold">
-                Services ansehen <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link href="/contact" className="inline-flex items-center gap-2 text-textSecondary font-semibold">
-                Projekt anfragen <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-
-          <div id="defense" className="bg-card rounded-2xl p-8 shadow-md border border-card/60">
-            <div className="text-xs tracking-widest uppercase text-textSecondary mb-2">Military Defense</div>
-            <h3 className="text-2xl font-semibold mb-3">Militaerische Schutzszenarien</h3>
-            <p className="text-textSecondary mb-4">
-              Robuste Systeme fuer stationaere und mobile Schutz-Szenarien - von Perimeter-Sicherung bis taktischem Einsatz.
-            </p>
-            <ul className="text-sm text-textSecondary grid gap-2">
-              <li>Fest installierte Systeme fuer kritische Standorte.</li>
-              <li>Lightweight Systeme auf Drohnen fuer flexible Einsaetze.</li>
-              <li>Tragbare Nodes fuer abgesessene Kraefte.</li>
-              <li>Connected Nodes fuer C2 und verteiltes Lagebild.</li>
-            </ul>
-            <div className="mt-6 flex flex-wrap gap-4">
-              <Link href="/services" className="inline-flex items-center gap-2 text-accent1 font-semibold">
-                Services ansehen <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link href="/contact" className="inline-flex items-center gap-2 text-textSecondary font-semibold">
-                Projekt anfragen <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </Section>
+    <div className="rounded-2xl border border-white/10 bg-black/25 p-6">
+      <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-accent1/40 bg-accent1/10 text-accent1">
+        {icon}
+      </div>
+      <h3 className="text-xl font-semibold text-textPrimary">{title}</h3>
+      <p className="mt-2 text-sm text-textSecondary">{subtitle}</p>
+      <ul className="mt-4 space-y-2 text-sm text-textSecondary">
+        {bullets.map((b) => (
+          <li key={b} className="flex items-start gap-2">
+            <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accentCool" />
+            <span>{b}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="mt-6">
+        <Link href={href} className="inline-flex items-center gap-2 text-accent1 font-semibold hover:underline">
+          View scenario <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
     </div>
   );
 }
+
+export default function MarketsPage() {
+  return (
+    <div className="relative mx-auto max-w-7xl overflow-hidden px-4 py-14 sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute -left-24 top-8 h-72 w-72 rounded-full bg-accentCool/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 top-0 h-80 w-80 rounded-full bg-accent1/10 blur-3xl" />
+
+      <section className="relative rounded-3xl border border-white/10 bg-gradient-to-br from-[#0f1922] via-[#111d28] to-[#0f151d] p-8 shadow-[0_32px_80px_rgba(0,0,0,0.4)] sm:p-12">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accentCool">Markets</p>
+        <h1 className="mt-3 max-w-4xl text-3xl font-semibold leading-tight text-textPrimary sm:text-5xl">
+          Choose your scenario
+          <span className="text-accent1">_</span>
+        </h1>
+        <p className="mt-4 max-w-3xl text-base leading-relaxed text-textSecondary">
+          The perception problem is the same—small drones are hard to detect in clutter—but deployments differ by
+          environment, constraints, and integration surfaces. Start with the closest scenario and we’ll map it to a pilot
+          plan.
+        </p>
+      </section>
+
+      <Section
+        id="civil"
+        title="Civil protection scenarios"
+        subtitle="Critical infrastructure and public safety contexts where false alarms, privacy, and uptime matter."
+        wrapperClassName="pt-16"
+      >
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <ScenarioCard
+            title="Airports"
+            subtitle="Low-altitude awareness beyond classical radar coverage."
+            icon={<TowerControl className="h-5 w-5" />}
+            href="/markets/airports"
+            bullets={[
+              'Track export into existing security/airspace systems',
+              'Low false alarms under clutter and heat haze',
+              'Continuous coverage with instrumented latency',
+            ]}
+          />
+          <ScenarioCard
+            title="Energy & utilities"
+            subtitle="Perimeter monitoring for dispersed assets and restricted zones."
+            icon={<Factory className="h-5 w-5" />}
+            href="/markets/energy"
+            bullets={[
+              'Fixed-site sensor mesh around assets',
+              'Edge-first processing for data sovereignty',
+              'Integration into site security and alerting',
+            ]}
+          />
+          <ScenarioCard
+            title="Prisons"
+            subtitle="Stop drop-offs and reconnaissance with reliable tracking."
+            icon={<Shield className="h-5 w-5" />}
+            href="/markets/prisons"
+            bullets={[
+              'High clutter tolerance near walls/buildings',
+              'Track-based alerting and evidence archiving',
+              'Designed for continuous operation',
+            ]}
+          />
+          <ScenarioCard
+            title="Major events"
+            subtitle="Temporary protection for crowds and high-profile venues."
+            icon={<Users className="h-5 w-5" />}
+            href="/markets/events"
+            bullets={[
+              'Rapid deployment and temporary nodes',
+              'Clear operator workflow and audit trail',
+              'Integration into event security operations',
+            ]}
+          />
+        </div>
+      </Section>
+
+      <Section
+        id="defense"
+        title="Defense & tactical scenarios"
+        subtitle="Degraded communications, mobility, and multi-target behavior are the baseline."
+      >
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <ScenarioCard
+            title="Tactical base protection"
+            subtitle="Distributed sensing built for degraded comms and contested environments."
+            icon={<Landmark className="h-5 w-5" />}
+            href="/markets/tactical-base"
+            bullets={[
+              'Graceful degradation without central dependency',
+              'Track-to-track fusion across nodes',
+              'Policy-driven escalation with human authorization',
+            ]}
+          />
+          <ScenarioCard
+            title="Border / perimeter"
+            subtitle="Wide-area monitoring across large boundaries and terrain variability."
+            icon={<Building2 className="h-5 w-5" />}
+            href="/markets/border-perimeter"
+            bullets={[
+              'Coverage planning via sensor density',
+              'Low-bandwidth track/event exchange',
+              'Integration-first exports to existing systems',
+            ]}
+          />
+        </div>
+      </Section>
+
+      <CtaStrip
+        kicker="Next step"
+        title="Tell us your scenario and constraints"
+        desc={
+          <>
+            We’ll respond with a concrete pilot proposal: recommended deployment form, interface outputs, and measurable
+            success criteria (latency, false alarms, coverage, degraded comms behavior).
+          </>
+        }
+        primary={{ href: '/contact?intent=pilot-discussion', label: 'Discuss a pilot' }}
+        secondary={{ href: '/product', label: 'See product architecture' }}
+      />
+
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-5 text-sm">
+        <Link
+          href="/"
+          className="rounded-lg border border-white/20 px-4 py-2 text-textPrimary transition-colors hover:border-accentCool/50 hover:text-accentCool"
+        >
+          Back to Home
+        </Link>
+        <Link
+          href="/contact?intent=talk-to-an-engineer"
+          className="inline-flex items-center gap-2 rounded-lg border border-accent1/40 bg-accent1/10 px-4 py-2 text-accent1 transition-colors hover:bg-accent1/20"
+        >
+          Get in Touch
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+

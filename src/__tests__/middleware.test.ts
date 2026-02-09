@@ -35,8 +35,34 @@ describe('middleware', () => {
     expect(res2).toEqual({ next: true });
   });
 
+  test('allows public asset folders and extension-based static files', () => {
+    const imagesReq = makeReq('/images/logo.png');
+    expect(middlewareModule.middleware(imagesReq as any)).toEqual({ next: true });
+
+    const videosReq = makeReq('/videos/demo.mp4');
+    expect(middlewareModule.middleware(videosReq as any)).toEqual({ next: true });
+
+    const iconsReq = makeReq('/icons/app.svg');
+    expect(middlewareModule.middleware(iconsReq as any)).toEqual({ next: true });
+
+    const cssReq = makeReq('/assets/site.css');
+    expect(middlewareModule.middleware(cssReq as any)).toEqual({ next: true });
+  });
+
+  test('allows API requests without unlock cookie', () => {
+    const req = makeReq('/api/status');
+    const res = middlewareModule.middleware(req as any);
+    expect(res).toEqual({ next: true });
+  });
+
   test('allows unauthenticated access to contact page', () => {
     const req = makeReq('/contact');
+    const res = middlewareModule.middleware(req as any);
+    expect(res).toEqual({ next: true });
+  });
+
+  test('allows unauthenticated access to imprint page', () => {
+    const req = makeReq('/imprint');
     const res = middlewareModule.middleware(req as any);
     expect(res).toEqual({ next: true });
   });
@@ -45,5 +71,13 @@ describe('middleware', () => {
     const req = makeReq('/contact', { swarm_home_unlocked: '1' });
     const res = middlewareModule.middleware(req as any);
     expect(res).toEqual({ next: true });
+  });
+
+  test('redirects protected routes to home with redirect query', () => {
+    const req = makeReq('/tech');
+    const res = middlewareModule.middleware(req as any) as any;
+    expect(res.redirect).toBe(true);
+    expect(res.url.pathname).toBe('/');
+    expect(res.url.searchParams.get('redirect')).toBe('/tech');
   });
 });
