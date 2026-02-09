@@ -5,8 +5,12 @@ describe('Tech page', () => {
   it('renders core sections and footer links', () => {
     render(<TechPage />);
 
-    expect(screen.getByRole('heading', { name: /Core tech in detail/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Hardware solution: Sensor system \+ edge node/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /How we detect & track small drones/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Perception pipeline/i })).toBeInTheDocument();
+    expect(screen.getByText(/We export tracks and events, not pixels/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/We convert camera feeds into compact, actionable track\/event data that downstream systems can use directly/i)
+    ).toBeInTheDocument();
 
     expect(screen.getByRole('link', { name: /View edge-based 3D reconstruction demo/i })).toHaveAttribute(
       'href',
@@ -17,6 +21,6 @@ describe('Tech page', () => {
     expect(screen.getByRole('link', { name: /Back to home page/i })).toHaveAttribute('href', '/');
     expect(screen.getByRole('link', { name: /Imprint/i })).toHaveAttribute('href', '/imprint');
     expect(screen.getByRole('link', { name: /Privacy Policy/i })).toHaveAttribute('href', '/privacy');
-    expect(screen.getByRole('link', { name: /Get in touch/i })).toHaveAttribute('href', '/contact');
+    expect(screen.getByRole('link', { name: /Get in touch/i })).toHaveAttribute('href', '/contact?intent=talk-to-an-engineer');
   });
 });

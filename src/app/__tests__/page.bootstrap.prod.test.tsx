@@ -28,7 +28,7 @@ describe('HomePage bootstrap (non-test env)', () => {
     render(<HomePage />);
 
     await waitFor(() => {
-      expect(screen.getByText(/Perception Systems For European Defence/i)).toBeInTheDocument();
+      expect(screen.getByText(/Protect critical airspace/i)).toBeInTheDocument();
     });
     expect(localStorage.getItem('swarm_home_unlocked')).toBe('1');
     expect(global.fetch).toHaveBeenCalledWith('/api/status', { credentials: 'include' });
@@ -52,4 +52,3 @@ describe('HomePage bootstrap (non-test env)', () => {
     expect(localStorage.getItem('swarm_home_unlocked')).toBe(null);
   });
 });
-

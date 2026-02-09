@@ -89,12 +89,6 @@ export default function PrivacyPage() {
                 prompts when the protected area is unlocked.
               </p>
               <p className="mt-3">
-                <span className="font-medium text-textPrimary">Key:</span> swarm_role_modal_meta
-                <br />
-                <span className="font-medium text-textPrimary">Purpose:</span> Stores UI preferences for the “product
-                updates” prompt (e.g., snooze and display counts).
-              </p>
-              <p className="mt-3">
                 <span className="font-medium text-textPrimary">Retention:</span> Until you clear your browser storage.
               </p>
             </div>

@@ -1,103 +1,42 @@
 "use client";
-import Image from 'next/image';
+
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { ArrowRight } from 'lucide-react';
 import Section from '../components/Section';
-import FeatureCard from '../components/FeatureCard';
-import { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Cpu, Eye, Network, Shield } from 'lucide-react';
-/**
- * The homepage is intentionally minimal.  It shows a passkey
- * entry form until the user enters the correct key via the
- * `/api/unlock` endpoint.  Once unlocked, a simple welcome
- * message is displayed.  The unlocked state is persisted in
- * `localStorage` so visitors aren’t prompted again on future
- * visits.  This logic keeps the password protection aspect of
- * the original project while stripping away the heavy marketing
- * sections, videos and modals that were previously present.
- */
+import CtaStrip from '../components/CtaStrip';
+
 export default function HomePage() {
   const [enteredKey, setEnteredKey] = useState('');
   const [unlocked, setUnlocked] = useState(false);
   const [unlockError, setUnlockError] = useState<string | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [fade, setFade] = useState(false);
 
-
-  const [email, setEmail] = useState('');
-  const [consent, setConsent] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const [role, setRole] = useState<string | null>(null);
-  // ---- Safe storage helpers ----
-  function loadMeta(): any {
-    if (typeof window === 'undefined') return {};
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
-    catch { return {}; }
-  }
-  function saveMeta(meta: any) {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(meta));
-  }
-  // helpers
-  const STORAGE_KEY = 'swarm_role_modal_meta';
-  const SNOOZE_DAYS = 14;                      // "Not now" snoozes for 14 days
-  const MAX_SHOWS = 3;                         // show CTA at most 3 times total per browser
-
-  // ---- Local state to control CTA visibility ----
-  const [canShowCta, setCanShowCta] = useState(false);
   function getSafeRedirectTarget() {
     if (typeof window === 'undefined') return null;
     try {
       const params = new URLSearchParams(window.location.search);
       const redirect = params.get('redirect');
       if (!redirect) return null;
-      // Only allow internal absolute paths to avoid open redirects.
       if (!redirect.startsWith('/') || redirect.startsWith('//')) return null;
       return redirect;
     } catch (_) {
       return null;
     }
   }
-  // Initialize CTA visibility from persisted meta
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try {
-      const meta = loadMeta() || {};
-      const totalShows = meta.totalShows || 0;
-      const lastDismiss = meta.lastDismissTs ? new Date(meta.lastDismissTs).getTime() : 0;
-      const now = Date.now();
-      const snoozeMs = SNOOZE_DAYS * 24 * 60 * 60 * 1000;
-      const canShow = totalShows < MAX_SHOWS && (lastDismiss === 0 || now - lastDismiss > snoozeMs);
-      setCanShowCta(canShow);
-    } catch (e) {
-      setCanShowCta(false);
-    }
-  }, []);
-  const onClose = () => {
-    setShowModal(false);
-    const meta = loadMeta();
-    saveMeta({ ...meta, lastDismissTs: Date.now() }); // start snooze
-    setCanShowCta(false); // hide CTA immediately
-  };
-  // ---- Open/Close handlers (CTA + modal overlay/close button) ----
-  const openFromCta = () => {
-    setShowModal(true);
-    const meta = loadMeta();
-    saveMeta({ ...meta, totalShows: (meta.totalShows || 0) + 1, lastShowTs: Date.now() });
-  };
-  // Bootstrapping: check session via API and fetch content if authenticated
+
   useEffect(() => {
     let mounted = true;
-    // During tests we avoid making network calls that cause async state updates.
-    // Tests directly control unlocked/localStorage behavior.
+
+    // Tests control unlocked/localStorage behavior; avoid async fetch noise in jsdom.
     if (process.env.NODE_ENV === 'test') {
       try {
         if (typeof window !== 'undefined' && localStorage.getItem('swarm_home_unlocked') === '1') {
           setUnlocked(true);
         }
       } catch (_) {}
-      return () => { mounted = false };
+      return () => {
+        mounted = false;
+      };
     }
 
     async function bootstrap() {
@@ -110,25 +49,29 @@ export default function HomePage() {
 
         if (serverUnlocked) {
           setUnlocked(true);
-          try { localStorage.setItem('swarm_home_unlocked', '1'); } catch (_) {}
+          try {
+            localStorage.setItem('swarm_home_unlocked', '1');
+          } catch (_) {}
           const redirectTarget = getSafeRedirectTarget();
-          if (redirectTarget) {
-            window.location.replace(redirectTarget);
-          }
+          if (redirectTarget) window.location.replace(redirectTarget);
           return;
         }
 
-        // Cookie/session is not valid: ensure stale local flag cannot trigger redirect loops.
-        try { localStorage.removeItem('swarm_home_unlocked'); } catch (_) {}
+        // Cookie/session is not valid: clear stale local flag to avoid redirect loops.
+        try {
+          localStorage.removeItem('swarm_home_unlocked');
+        } catch (_) {}
         setUnlocked(false);
       } catch (_) {
         if (!mounted) return;
-        // If status check fails, keep lock screen by default.
         setUnlocked(false);
       }
     }
+
     bootstrap();
-    return () => { mounted = false };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   async function handleUnlock() {
@@ -142,29 +85,30 @@ export default function HomePage() {
       });
       const j = await res.json().catch(() => ({}));
       if (j && j.success) {
-        try { localStorage.setItem('swarm_home_unlocked', '1'); } catch (_) {}
+        try {
+          localStorage.setItem('swarm_home_unlocked', '1');
+        } catch (_) {}
         const redirectTarget = getSafeRedirectTarget();
         if (redirectTarget) {
           window.location.assign(redirectTarget);
           return;
         }
-        // In test environment avoid calling navigation.reload (jsdom doesn't implement it)
         if (process.env.NODE_ENV !== 'test') {
-          try { window.location.reload(); } catch (_) {}
+          try {
+            window.location.reload();
+          } catch (_) {}
         }
         return;
       }
-      // if not success, show error
       setUnlockError(j?.error || 'Unlock failed');
     } catch (e) {
       setUnlockError('Network error — try again');
     }
   }
 
-  // Render the lock screen until the correct key is entered.
   if (!unlocked) {
     return (
-      <div className="py-0 relative overflow-hidden flex items-center justify-center bg-background">
+      <div className="relative overflow-hidden bg-background">
         <div className="hero-bg-elements">
           <div className="hero-bg-lines" />
           <div className="hero-bg-glow-top" />
@@ -172,466 +116,189 @@ export default function HomePage() {
           <div className="hero-bg-fade" />
         </div>
 
-        {/* Modal (only if user clicks CTA) */}
-              {showModal && (
-                <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                  <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-                  <div className="relative bg-white dark:bg-card text-textPrimary rounded-lg max-w-lg w-full p-6 shadow-lg z-10">
-                    <h3 className="text-lg font-semibold mb-2">Quick question</h3>
-                    <p className="text-sm text-textSecondary mb-4">
-                      Are you an investor, project partner, or a potential customer? Optionally subscribe to product updates (GDPR-compliant).
+        <section className="relative border-b border-[#465644]/60">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 relative z-10">
+            <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+              <div className="space-y-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accentCool">Private preview</p>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+                  Drone detection is a perception problem<span className="text-accent1">_</span>
+                </h1>
+                <p className="max-w-2xl text-lg text-textSecondary">
+                  Small drones fly low, fast, and often without RF control—exactly where classical systems lose
+                  reliability first. Swarm.ai builds operator-first detection and tracking systems to protect critical
+                  airspace under real constraints.
+                </p>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-white/10 bg-black/25 p-4">
+                    <p className="text-sm font-semibold text-textPrimary">Early warning in clutter</p>
+                    <p className="mt-1 text-sm text-textSecondary">
+                      EO/IR detection + tracking engineered for low-altitude background clutter and low SNR.
                     </p>
-
-                    <div className="flex gap-2 mb-4">
-                      <button
-                        onClick={() => setRole('investor')}
-                        className={`px-3 py-1 rounded ${
-                          role === 'investor'
-                            ? 'bg-accent1 text-white'
-                            : 'bg-[#0f1724] text-textSecondary'
-                        }`}
-                      >
-                        Investor
-                      </button>
-                      <button
-                        onClick={() => setRole('partner')}
-                        className={`px-3 py-1 rounded ${
-                          role === 'partner'
-                            ? 'bg-accent1 text-white'
-                            : 'bg-[#0f1724] text-textSecondary'
-                        }`}
-                      >
-                        Project partner
-                      </button>
-                      <button
-                        onClick={() => setRole('customer')}
-                        className={`px-3 py-1 rounded ${
-                          role === 'customer'
-                            ? 'bg-accent1 text-white'
-                            : 'bg-[#0f1724] text-textSecondary'
-                        }`}
-                      >
-                        Customer
-                      </button>
-                    </div>
-
-                    <form
-                      onSubmit={async (e) => {
-                        e.preventDefault();
-                        const simpleEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                        if (email && !simpleEmail.test(email)) {
-                          alert('Please enter a valid email or leave blank to skip.');
-                          return;
-                        }
-                        if (email && !consent) {
-                          alert('Please consent to receive updates via email.');
-                          return;
-                        }
-                        try {
-                          const res = await fetch('/api/subscribe', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ role, email: email || null, consent }),
-                          });
-                          const payload = await res.json();
-                          if (!res.ok) throw new Error(payload?.error || 'failed');
-                          setSubscribed(true);
-                          setTimeout(() => setShowModal(false), 1000);
-                        } catch (err) {
-                          console.error(err);
-                          alert('Subscription failed — try again later.');
-                        }
-                      }}
-                      className="flex flex-col gap-3"
-                    >
-                      <input
-                        ref={emailRef}
-                        type="email"
-                        placeholder="Email (optional)"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full rounded px-3 py-2 bg-[#0b1220] text-textSecondary"
-                      />
-                      <label className="flex items-center gap-2 text-sm">
-                        <input
-                          type="checkbox"
-                          checked={consent}
-                          onChange={(e) => setConsent(e.target.checked)}
-                        />{' '}
-                        I agree to receive product updates (you can unsubscribe anytime)
-                      </label>
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm text-textSecondary">
-                          {subscribed ? 'Thanks — you will be updated.' : 'We’ll only email product updates.'}
-                        </div>
-                        <div className="flex gap-2">
-                          <button type="button" onClick={onClose} className="text-sm text-textSecondary hover:underline">
-                            Close
-                          </button>
-                          <button type="submit" className="px-3 py-1 rounded bg-accent1 text-white text-sm">
-                            {subscribed ? 'Done' : 'Subscribe'}
-                          </button>
-                        </div>
-                      </div>
-                      <p className="text-xs text-textSecondary mt-2">
-                        Privacy: we store only role, email (if provided), consent and a consent timestamp.
-                        See our <a href="/privacy" className="text-accent1 underline">privacy policy</a>.
-                      </p>
-                    </form>
+                  </div>
+                  <div className="rounded-xl border border-white/10 bg-black/25 p-4">
+                    <p className="text-sm font-semibold text-textPrimary">Distributed resilience</p>
+                    <p className="mt-1 text-sm text-textSecondary">
+                      No single fusion center. Nodes keep operating under degraded comms or partial loss.
+                    </p>
                   </div>
                 </div>
-              )}
 
-              {/* Floating CTA */}
-                {!showModal && canShowCta && (
-                  <div className="fixed bottom-4 right-4 z-40 rounded-lg shadow-lg bg-[#0f1724] text-textSecondary px-4 py-3 flex items-center gap-3">
-                    <span className="text-sm">Get product updates?</span>
-                    <button
-                      className="px-3 py-1 rounded bg-accent1 text-white text-sm"
-                      onClick={openFromCta}
-                    >
-                      Yes, notify me
-                    </button>
-                    <button className="text-xs opacity-70 hover:opacity-100" onClick={onClose}>
-                      Not now
-                    </button>
-                  </div>
-                )}
-
-
-        <section className="py-0 relative overflow-hidden flex items-center justify-center">
-
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-
-          <div className="grid md:grid-cols-1 gap-8 items-center">
-            <div className="space-y-6">
-              
-              {/* Intro statements */}
-              
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
-                SWARM.AI<span className="text-accent1">_</span>
-              </h1>
-              <p className="text-lg md:text-xl text-textSecondary">
-                AI backbone for drone detection, tracking and defence.
-              </p>
-              
-
-            </div>
-            <div className="hidden md:block">
-              {/* Placeholder for hero visual; can be replaced with 3D/sensor animation */}
-            </div>
-          </div>
-        </div>
-      </section>
-
-        <div className="bg-card rounded-xl shadow-lg p-8 max-w-sm w-full text-center">
-          <h2 className="text-2xl font-bold mb-4">Protected Homepage</h2>
-          <p className="mb-6 text-textSecondary">Enter passkey to access the site.</p>
-          <input
-            type="password"
-            placeholder="Passkey"
-            className="w-full px-4 py-2 rounded-md bg-background border border-card/50 mb-4 focus:border-accent1 focus:ring-accent1 outline-none"
-            value={enteredKey}
-            onChange={e => setEnteredKey(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                handleUnlock();
-              }
-            }}
-          />
-          {unlockError && <p className="text-red-500 text-sm mb-2">{unlockError}</p>}
-          <button
-            onClick={handleUnlock}
-            className="w-full py-2 px-4 rounded-md bg-accent1 text-background hover:bg-accent1/80 transition-colors"
-          >
-            Unlock
-          </button>
-          <Link
-            href="/contact"
-            className="mt-4 inline-block text-base font-semibold text-accent1 hover:underline"
-          >
-            Interested? Contact us
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden border-b border-[#465644]/60">
-        <div className="space-y-24 pointer-events-none">
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className={`absolute top-0 left-0 w-full h-full object-cover object-[center_90%] transition-opacity duration-2000 ${
-              fade ? "opacity-0" : "opacity-20"
-            }`}
-          >
-            <source src="/videos/source-3.mov" type="video/mp4" />
-          </video>
-          <div className="hero-bg-lines" />
-          <div className="hero-bg-glow-top" />
-          <div className="hero-bg-glow-bottom" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-background/90" />
-        </div>
-        <div className="py-0 relative overflow-hidden flex flex-col items-center justify-center text-center px-4 z-10">
-          <div className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-textSecondary mb-4">
-          </div>
-          <h1 className="text-5xl sm:text-6xl font-bold mb-4">
-            <span className="text-accent1 font-semibold">Perception Systems For European Defence</span>
-            
-          </h1>
-          <p className="text-lg md:text-xl text-textSecondary mb-4 max-w-3xl">
-            Protect airspace 24/7 with AI-powered perception at the edge and a distributed using propreritary mirror-power optical sensors and fault-tolerant, portable sensor architecture.
-          </p>
-          
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-accent1 text-white rounded-lg hover:bg-accent1/80 transition-colors font-semibold"
-          >
-            Contact us
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-          {process.env.NODE_ENV !== 'production' && (
-            <button
-              onClick={async () => {
-                try {
-                  await fetch('/api/lock', { method: 'POST' });
-                } catch (_) {}
-                try { localStorage.removeItem('swarm_home_unlocked'); } catch (_) {}
-                try { location.reload(); } catch (_) { /* ignore */ }
-              }}
-              className="mt-4 inline-flex items-center gap-2 px-4 py-2 border rounded-md text-sm text-textSecondary bg-card"
-            >
-              Dev: Lock
-            </button>
-          )}
-        </div>
-      </section>
-
-      <Section
-        title="Defend against drones"
-        subtitle="Three operational domains for modern counter-drone defense, powered by resilient AI-based sensing."
-        wrapperClassName="border-t border-[#465644]/55 bg-gradient-to-b from-[#141c16]/75 to-[#101713]/75"
-      >
-        <div className="grid md:grid-cols-3 gap-6 mt-6">
-          <div className="bg-card rounded-2xl overflow-hidden shadow-md border border-card/60">
-            <Image
-              src="/images/87753f8d-9322-4db9-9c40-aa5d3ed249d3.png"
-              alt="Air domain drone defense"
-              width={1200}
-              height={700}
-              className="h-48 w-full object-cover brightness-60"
-            />
-            <div className="p-6">
-              <h3 className="text-2xl font-semibold mb-2">Air</h3>
-              <p className="text-textSecondary">
-                Detect small flying drones early. Ground-to-drone or drone-to-drone detection.
-              </p>
-            </div>
-          </div>
-          <div className="bg-card rounded-2xl overflow-hidden shadow-md border border-card/60">
-            <Image
-              src="/images/16beed3b-21af-4a36-96d9-f6e1d4b90d31.png"
-              alt="Land domain drone defense"
-              width={1200}
-              height={700}
-              className="h-48 w-full object-cover brightness-60"
-            />
-            <div className="p-6">
-              <h3 className="text-2xl font-semibold mb-2">Land</h3>
-              <p className="text-textSecondary">
-                Solutions for critical infrastructure protection and mobile support for soldiers in the field.
-              </p>
-            </div>
-          </div>
-          <div className="bg-card rounded-2xl overflow-hidden shadow-md border border-card/60">
-            <Image
-              src="/images/9cc2f798-4eeb-4dbc-bee3-9e3b964061ab.png"
-              alt="Sea domain drone defense"
-              width={1200}
-              height={700}
-              className="h-48 w-full object-cover brightness-60"
-            />
-            <div className="p-6">
-              <h3 className="text-2xl font-semibold mb-2">Sea</h3>
-              <p className="text-textSecondary">
-                We provide systems for floating platforms and water drones for maritime surveillance and defense.
-              </p>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      <Section
-        title="Core tech"
-        subtitle={
-          <>
-            A hardware stack of sensors and edge nodes, built for real-time perception without data bottlenecks,
-            paired with cutting-edge AI research. 
-          </>
-        }
-        wrapperClassName="border-t border-[#495a47]/55 bg-gradient-to-b from-[#171d16]/75 to-[#121813]/75"
-      >
-        <div className="mt-6 rounded-2xl border border-white/10 bg-black/25 p-6">
-          <div className="grid md:grid-cols-4 gap-4">
-            <FeatureCard icon={<Eye className="w-7 h-7 mx-auto text-accent1" />} title="360° RGB & TIR" desc="24/7 fully-automated surveillance of the air space." />
-            <FeatureCard icon={<Cpu className="w-7 h-7 mx-auto text-accent1" />} title="Real-time Edge CV" desc="Compute at the sensor edge, with minimal data footprint." />
-            <FeatureCard icon={<Network className="w-7 h-7 mx-auto text-accent1" />} title="Distributed" desc="Robust, fault-tolerant, and highly scalable. All compute is done at the sensor mesh." />
-            <FeatureCard icon={<Shield className="w-7 h-7 mx-auto text-accent1" />} title="Resilient by design" desc="Built for mission-critical environments. Redundant to sensor losses." />
-          </div>
-          <div className="mt-8 flex justify-center">
-            <Link
-              href="/tech"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-card rounded-lg hover:bg-card/80 transition-colors text-sm font-semibold"
-            >
-              Explore Core Tech
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </Section>
-
-      <Section
-        title="The Swarm.ai technology"
-        subtitle="From raw sensing to mission-level autonomy in a staged, deployable architecture."
-        wrapperClassName="border-t border-[#4a5a46]/55 bg-gradient-to-b from-[#181f17]/75 to-[#111712]/75"
-      >
-        <div className="mt-6 rounded-2xl border border-white/10 bg-black/30 p-6">
-          <div className="relative hidden md:block">
-            <div className="absolute left-0 right-0 top-5 h-[2px] rounded-full bg-white/15" />
-            <div className="absolute left-0 top-5 h-[2px] w-1/2 rounded-full bg-accent1" />
-            <div className="grid grid-cols-7 gap-3">
-              <div className="relative pt-10">
-                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full bg-accent1" />
-                <div className="rounded-xl border border-white/10 bg-card/60 p-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">01</p>
-                  <p className="mt-1 text-sm font-medium">360° sensor</p>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <Link
+                    href="/contact?intent=talk-to-an-engineer"
+                    className="inline-flex items-center justify-center rounded-lg border border-accent1/40 bg-accent1/10 px-5 py-3 text-sm font-semibold text-accent1 transition-colors hover:bg-accent1/20"
+                  >
+                    Talk to an engineer <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                  <Link
+                    href="/contact?intent=request-access"
+                    className="inline-flex items-center justify-center rounded-lg border border-white/20 bg-card/30 px-5 py-3 text-sm font-semibold text-textPrimary transition-colors hover:border-accentCool/50 hover:text-accentCool"
+                  >
+                    Request access
+                  </Link>
                 </div>
               </div>
-              <div className="relative pt-10">
-                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full bg-accent1" />
-                <div className="rounded-xl border border-white/10 bg-card/60 p-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">02</p>
-                  <p className="mt-1 text-sm font-medium">6D unknown object identification and tracking</p>
-                </div>
-              </div>
-              <div className="relative pt-10">
-                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full bg-accent1" />
-                <div className="rounded-xl border border-white/10 bg-card/60 p-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">03</p>
-                  <p className="mt-1 text-sm font-medium">Distributed Edge Network</p>
-                </div>
-              </div>
-              <div className="relative pt-10">
-                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full bg-accent1" />
-                <div className="rounded-xl border border-white/10 bg-card/60 p-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">04</p>
-                  <p className="mt-1 text-sm font-medium">Military grade 3D-printable drone platform</p>
-                </div>
-              </div>
-              <div className="relative pt-10">
-                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full border border-white/35 bg-background" />
-                <div className="rounded-xl border border-white/10 bg-card/40 p-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">05</p>
-                  <p className="mt-1 text-sm font-medium text-textSecondary">Swarm Intelligence Layer</p>
-                </div>
-              </div>
-              <div className="relative pt-10">
-                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full border border-white/35 bg-background" />
-                <div className="rounded-xl border border-white/10 bg-card/40 p-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">06</p>
-                  <p className="mt-1 text-sm font-medium text-textSecondary">autonomous impact and parachute deployment</p>
-                </div>
-              </div>
-              <div className="relative pt-10">
-                <div className="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2 rounded-full border border-white/35 bg-background" />
-                <div className="rounded-xl border border-white/10 bg-card/40 p-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">07</p>
-                  <p className="mt-1 text-sm font-medium text-textSecondary">Optimize for mobility and fast deployment</p>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div className="space-y-3 md:hidden">
-            <div className="rounded-xl border border-white/10 bg-card/60 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">01 360° sensor</p>
-            </div>
-            <div className="rounded-xl border border-white/10 bg-card/60 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">02 6D unknown object identification and tracking</p>
-            </div>
-            <div className="rounded-xl border border-white/10 bg-card/60 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">03 Distributed Edge Network</p>
-            </div>
-            <div className="rounded-xl border border-white/10 bg-card/60 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">04 military grade printable drone supplier</p>
-            </div>
-            <div className="rounded-xl border border-white/10 bg-card/40 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">05 Swarm Intelligence Layer</p>
-            </div>
-            <div className="rounded-xl border border-white/10 bg-card/40 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">06 autonomous impact and parachute deployment</p>
-            </div>
-            <div className="rounded-xl border border-white/10 bg-card/40 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">07 Optimize for mobility and fast deployment</p>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-
-      <Section
-        title="Team"
-        subtitle="Focused on capabilities and a proven track record."
-        wrapperClassName="border-t border-[#4d5f48]/55 bg-gradient-to-b from-[#1a1f18]/75 to-[#141912]/75"
-      >
-        <div className="mt-6 rounded-2xl border border-white/10 bg-black/25 p-6">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-card rounded-xl p-5">
-              <div className="text-sm text-textSecondary">Research</div>
-              <div className="mt-2 font-semibold">CVPR‑Track‑Record in Computer Vision</div>
-              <div className="mt-2 text-sm text-textSecondary">
-                Publications and results from top-tier conferences.
-              </div>
-            </div>
-            <div className="bg-card rounded-xl p-5">
-              <div className="text-sm text-textSecondary">Autonomous Systems</div>
-              <div className="mt-2 font-semibold">Industry-proven autonomy expertise</div>
-              <div className="mt-2 text-sm text-textSecondary">
-                Robustness, safety, and integration in real deployments.
-              </div>
-            </div>
-            <div className="bg-card rounded-xl p-5">
-              <div className="text-sm text-textSecondary">Experience</div>
-              <div className="mt-2 font-semibold">Experience from Huawei &amp; Mercedes-Benz</div>
-              <div className="mt-2 text-sm text-textSecondary">
-                Scaling, product leadership, and international execution.
-              </div>
-            </div>
-            <div className="bg-card rounded-xl p-5">
-              <div className="text-sm text-textSecondary">Remote Sensing</div>
-              <div className="mt-2 font-semibold">Top-ranked German team</div>
-              <div className="mt-2 text-sm text-textSecondary">
-                According to ShanghaiRanking GRAS 2020 (AS0224).
-                {" "}
-                <a
-                  href="https://www.shanghairanking.com/rankings/gras/2020/AS0224"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-accent1 hover:underline"
+              <div className="bg-card/70 rounded-2xl shadow-lg p-8 border border-white/10 text-center">
+                <h2 className="text-2xl font-bold mb-3">Protected Homepage</h2>
+                <p className="mb-6 text-textSecondary">Enter the passkey to access product, tech, and service details.</p>
+                <input
+                  type="password"
+                  placeholder="Passkey"
+                  className="w-full px-4 py-2 rounded-md bg-background border border-card/50 mb-4 focus:border-accent1 focus:ring-accent1 outline-none"
+                  value={enteredKey}
+                  onChange={e => setEnteredKey(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleUnlock();
+                    }
+                  }}
+                />
+                {unlockError && <p className="text-red-500 text-sm mb-2">{unlockError}</p>}
+                <button
+                  onClick={handleUnlock}
+                  className="w-full py-2 px-4 rounded-md bg-accent1 text-background hover:bg-accent1/80 transition-colors"
                 >
-                  Source
-                </a>
+                  Unlock
+                </button>
+                <p className="mt-4 text-xs text-textSecondary">
+                  No passkey?{' '}
+                  <Link href="/contact?intent=request-access" className="text-accent1 hover:underline">
+                    Request access
+                  </Link>{' '}
+                  or{' '}
+                  <Link href="/contact?intent=talk-to-an-engineer" className="text-accent1 hover:underline">
+                    talk to us
+                  </Link>
+                  .
+                </p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <Section
+          title="Why small drones are hard to detect"
+          subtitle="Small UAVs exploit the exact edge cases where detection systems break first."
+          wrapperClassName="border-b border-[#465644]/60"
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-sm font-semibold text-textPrimary">Low signature at low altitude</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Targets are small, fast, and close to background clutter—especially over cities, trees, or water.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-sm font-semibold text-textPrimary">No RF assumptions</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Autonomy and pre-programmed routes make RF detection unreliable as a primary signal.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-sm font-semibold text-textPrimary">Short timelines</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Response time is defined by detection-to-track latency. We instrument it end-to-end.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-sm font-semibold text-textPrimary">Adversarial behavior</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Swarms, decoys, and route changes quickly degrade static “detector-only” approaches.
+              </p>
+            </div>
+          </div>
+        </Section>
+
+        <Section
+          title="Why monolithic systems fail"
+          subtitle="Drone defense is not solved by a single sensor and a central video pipeline."
+          wrapperClassName="border-b border-[#465644]/60"
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-sm font-semibold text-textPrimary">Single point of failure</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Central fusion centers and high-bandwidth links become brittle under interference and load.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-sm font-semibold text-textPrimary">Bandwidth and latency</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Streaming video is expensive and slow. Operational outputs should be tracks, events, and confidence.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-sm font-semibold text-textPrimary">Vendor lock-in</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Closed stacks slow down upgrades and integration. Modularity wins in real deployments.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-sm font-semibold text-textPrimary">Slow iteration cycles</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Threats evolve fast. Systems must learn and update without replacing the entire platform.
+              </p>
+            </div>
+          </div>
+        </Section>
+
+        <Section
+          title="Who we are"
+          subtitle="Remote sensing world-class expertise and 3D professionals building deployable edge perception."
+          wrapperClassName="border-b border-[#465644]/60"
+        >
+          <div className="grid gap-4 md:grid-cols-4">
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">Remote sensing</p>
+              <p className="mt-2 font-semibold text-textPrimary">Top-ranked team</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                TUM Photogrammetry &amp; Remote Sensing (ShanghaiRanking GRAS 2020, AS0224).
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">3D perception</p>
+              <p className="mt-2 font-semibold text-textPrimary">Tracking &amp; reconstruction</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                3D computer vision methods designed for real-world constraints and edge compute.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">Systems</p>
+              <p className="mt-2 font-semibold text-textPrimary">AI platforms at scale</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Engineering background from large-scale industrial AI platform development.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">Deployment</p>
+              <p className="mt-2 font-semibold text-textPrimary">Edge-first delivery</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Modular software + interfaces built for integration into existing security and C2 ecosystems.
+              </p>
             </div>
           </div>
           <div className="mt-8 flex justify-center">
@@ -639,41 +306,170 @@ export default function HomePage() {
               href="/about"
               className="inline-flex items-center gap-2 px-5 py-3 bg-card rounded-lg hover:bg-card/80 transition-colors text-sm font-semibold"
             >
-              Get to know us
-              <ArrowRight className="w-4 h-4" />
+              Meet the team <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-        </div>
-      </Section>
+        </Section>
 
-      {/* Footer */}
-      <section className="w-full py-8 bg-background border-t border-[#465644]/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-textSecondary">
-            <div className="opacity-80">
-              © {new Date().getFullYear()} Swarm.ai. All rights reserved.
+        <CtaStrip
+          kicker="Next step"
+          title="Want a pilot plan for your site?"
+          desc={
+            <>
+              Tell us your environment (airport, energy site, event, tactical base, border/perimeter) and constraints
+              (range, false-alarm tolerance, comms, integration). We’ll respond with a concrete deployment proposal.
+            </>
+          }
+          primary={{ href: '/contact?intent=pilot-discussion', label: 'Discuss a pilot' }}
+          secondary={{ href: '/contact?intent=request-access', label: 'Request access' }}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-background">
+      <section className="relative overflow-hidden border-b border-[#465644]/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accentCool">Swarm.ai</p>
+          <h1 className="mt-3 text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+            Protect critical airspace with reliable early drone detection<span className="text-accent1">_</span>
+          </h1>
+          <p className="mt-4 max-w-3xl text-lg text-textSecondary">
+            Swarm.ai builds operator-first detection and tracking systems for low-altitude threats. Our mission is to
+            keep sites operational in clutter, degraded comms, and short response timelines.
+          </p>
+
+          <div className="mt-10 grid gap-4 lg:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-6">
+              <p className="text-sm font-semibold text-textPrimary">Secure a site (operators)</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Early warning and stable tracking with instrumented latency—export tracks into your existing security or
+                airspace stack.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/markets#civil"
+                  className="inline-flex items-center gap-2 rounded-lg border border-accent1/40 bg-accent1/10 px-4 py-2 text-sm font-semibold text-accent1 transition-colors hover:bg-accent1/20"
+                >
+                  Explore scenarios <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/product"
+                  className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-card/30 px-4 py-2 text-sm font-semibold text-textPrimary transition-colors hover:border-accentCool/50 hover:text-accentCool"
+                >
+                  Product overview
+                </Link>
+              </div>
             </div>
-            <nav className="flex items-center gap-4" aria-label="Footer navigation">
-              <Link href="/about" className="hover:underline">About</Link>
-              <Link href="/contact" className="hover:underline">Contact</Link>
-              <Link href="/imprint" className="hover:underline">Imprint</Link>
-              <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
-            </nav>
-            <div className="flex items-center gap-4">
-              <Link href="/contact" className="text-accent1 hover:underline" aria-label="Get product updates">
-                Get product updates →
-              </Link>
-              <nav className="flex items-center gap-3" aria-label="Social links">
-                <a href="https://www.linkedin.com/company/tum-chair-of-remote-sensing-technology/" target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn</a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:underline">X</a>
-              </nav>
-            </div>
-            <div className="opacity-80">
-              Built in Munich, EU
+
+            <div className="rounded-2xl border border-white/10 bg-black/25 p-6">
+              <p className="text-sm font-semibold text-textPrimary">Integrate capabilities (secondary path for integrators/OEMs)</p>
+              <p className="mt-2 text-sm text-textSecondary">
+                Sensor-agnostic perception modules + interfaces. Consume tracks/events or export into standardized C2 data
+                products.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/partners/integrators"
+                  className="inline-flex items-center gap-2 rounded-lg border border-accent1/40 bg-accent1/10 px-4 py-2 text-sm font-semibold text-accent1 transition-colors hover:bg-accent1/20"
+                >
+                  Integration path <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/tech"
+                  className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-card/30 px-4 py-2 text-sm font-semibold text-textPrimary transition-colors hover:border-accentCool/50 hover:text-accentCool"
+                >
+                  Technical proof
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
-    </>
+
+      <Section
+        title="Architecture for real operations"
+        subtitle="Swarm.ai is built to protect large areas under real-world constraints. A distributed sensor mesh processes EO/IR data at the edge, sharing events instead of video. Multi-node fusion reconstructs trajectories and optional 3D scene updates from minimal data. The same architecture adapts continuously to new and previously unseen drone types."
+        wrapperClassName="border-t border-[#465644]/60 bg-gradient-to-b from-[#171d16]/60 to-[#121813]/60"
+      >
+        <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-xl border border-white/10 bg-black/20 p-5">
+              <p className="text-sm font-semibold text-textPrimary">Architecture diagram (placeholder)</p>
+              <div className="mt-3 flex aspect-video items-center justify-center rounded-lg border border-white/10 bg-background/20 p-4 text-center text-xs text-textSecondary">
+                Diagram: distributed sensor mesh → edge processing → fusion → structured outputs
+              </div>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-black/20 p-5">
+              <p className="text-sm font-semibold text-textPrimary">Looping animation (placeholder)</p>
+              <div className="mt-3 flex aspect-video items-center justify-center rounded-lg border border-white/10 bg-background/20 p-4 text-center text-xs text-textSecondary">
+                Animation: multi-view detection → track fusion → 3D trajectory
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-xl border border-white/10 bg-black/20 p-5">
+            <p className="text-sm font-semibold text-textPrimary">Response-ready interface</p>
+            <p className="mt-2 text-sm text-textSecondary">
+              Swarm.ai provides cueing, safety interlocks, and auditability. Physical response is executed via partner
+              platforms through a defined interface, including autonomy-ready interceptor systems in permissioned
+              contexts.
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      <Section
+        title="Demos"
+        subtitle="Live demonstration of distributed detection, edge fusion, and real-time alerting."
+        wrapperClassName="border-t border-[#465644]/60 bg-gradient-to-b from-[#181f17]/60 to-[#111712]/60"
+      >
+        <div className="rounded-2xl border border-white/10 bg-black/25 p-6">
+          <div className="flex aspect-video items-center justify-center rounded-xl border border-white/10 bg-black/20 p-4 text-center text-sm text-textSecondary">
+            Demo media placeholder (video/animation)
+          </div>
+        </div>
+      </Section>
+
+      <CtaStrip
+        kicker="Get started"
+        title="Discuss your constraints with us"
+        desc={
+          <>
+            The fastest way to de-risk a counter‑UAS program is to align on sensing constraints, integration surfaces,
+            and measurable success criteria. We’ll translate that into a staged pilot plan.
+          </>
+        }
+        primary={{ href: '/contact?intent=pilot-discussion', label: 'Discuss a pilot' }}
+        secondary={{ href: '/services', label: 'See engagement model' }}
+      />
+
+      <section className="w-full py-8 bg-background border-t border-[#465644]/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-textSecondary">
+            <div className="opacity-80">© {new Date().getFullYear()} Swarm.ai. All rights reserved.</div>
+            <nav className="flex items-center gap-4" aria-label="Footer navigation">
+              <Link href="/about" className="hover:underline">
+                About
+              </Link>
+              <Link href="/markets" className="hover:underline">
+                Markets
+              </Link>
+              <Link href="/contact" className="hover:underline">
+                Contact
+              </Link>
+              <Link href="/imprint" className="hover:underline">
+                Imprint
+              </Link>
+              <Link href="/privacy" className="hover:underline">
+                Privacy Policy
+              </Link>
+            </nav>
+            <div className="opacity-80">Built in Munich, EU</div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
