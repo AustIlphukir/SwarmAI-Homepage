@@ -8,9 +8,7 @@ describe('Tech page', () => {
     expect(screen.getByRole('heading', { name: /How we detect & track small drones/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Perception pipeline/i })).toBeInTheDocument();
     expect(screen.getByText(/We export tracks and events, not pixels/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/We convert camera feeds into compact, actionable track\/event data that downstream systems can use directly/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Designed for low-latency consumers/i)).toBeInTheDocument();
 
     expect(screen.getByRole('link', { name: /View edge-based 3D reconstruction demo/i })).toHaveAttribute(
       'href',
