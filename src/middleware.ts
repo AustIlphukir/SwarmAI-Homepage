@@ -21,8 +21,8 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Allow the homepage, privacy, and contact page while locked.
-  if (pathname === '/' || pathname === '/privacy' || pathname === '/contact') {
+  // Allow the homepage and legal/contact pages while locked.
+  if (pathname === '/' || pathname === '/privacy' || pathname === '/imprint' || pathname === '/contact') {
     return NextResponse.next();
   }
 

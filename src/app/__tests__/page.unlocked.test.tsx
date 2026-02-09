@@ -13,15 +13,15 @@ describe('HomePage unlocked view', () => {
 
   test('renders hero text and contact link', () => {
     render(<HomePage />);
-    expect(screen.getByText(/Perception Systems for/)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Contact Us/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Perception Systems For European Defence/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Contact us/i })).toBeInTheDocument();
   });
 
-  test('renders product cards and videos', () => {
+  test('renders domain cards and videos', () => {
     render(<HomePage />);
-    // Check for product cards with links to /product
-    const productLinks = screen.getAllByRole('link', { name: /See\. Real-Time Perception/i });
-    expect(productLinks.length).toBeGreaterThan(0);
+    expect(screen.getByRole('heading', { name: /Defend against drones/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Core tech/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Explore Core Tech/i })).toBeInTheDocument();
     // video element should be present in the DOM
     expect(document.querySelector('video')).toBeTruthy();
   });

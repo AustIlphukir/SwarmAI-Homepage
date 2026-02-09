@@ -184,8 +184,12 @@ export default function CorePage() {
       </Section> */}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="text-accent1 hover:underline">Back to home page</Link>
+        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+          <div className="flex items-center gap-4 text-sm text-textSecondary">
+            <Link href="/" className="text-accent1 hover:underline">Back to home page</Link>
+            <Link href="/imprint" className="hover:underline">Imprint</Link>
+            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
+          </div>
           <Link href="/contact" className="inline-flex items-center gap-2 px-5 py-3 bg-accent1 text-white rounded-lg hover:bg-accent1/80 transition-colors font-semibold">
             Get in touch
           </Link>

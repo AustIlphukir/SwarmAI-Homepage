@@ -655,7 +655,6 @@ export default function HomePage() {
             </div>
             <nav className="flex items-center gap-4" aria-label="Footer navigation">
               <Link href="/about" className="hover:underline">About</Link>
-              <Link href="/product" className="hover:underline">Product</Link>
               <Link href="/contact" className="hover:underline">Contact</Link>
               <Link href="/imprint" className="hover:underline">Imprint</Link>
               <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
@@ -665,7 +664,7 @@ export default function HomePage() {
                 Get product updates →
               </Link>
               <nav className="flex items-center gap-3" aria-label="Social links">
-                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn</a>
+                <a href="https://www.linkedin.com/company/tum-chair-of-remote-sensing-technology/" target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn</a>
                 <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:underline">X</a>
               </nav>
             </div>
