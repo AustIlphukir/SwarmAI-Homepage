@@ -38,8 +38,8 @@ describe('Navbar component', () => {
     // links to /markets, /product, /tech, /resources, /about and /contact. We use
     // getByRole to find the link by its accessible name and then
     // assert that the href matches the expected path.
-    const marketsLink = screen.getByRole('link', { name: 'Markets' });
-    expect(marketsLink).toHaveAttribute('href', '/markets');
+    const scenariosLink = screen.getByRole('link', { name: 'Scenarios' });
+    expect(scenariosLink).toHaveAttribute('href', '/markets');
     const coreLink = screen.getByRole('link', { name: 'Tech' });
     expect(coreLink).toHaveAttribute('href', '/tech');
     const productLink = screen.getByRole('link', { name: 'Product' });

@@ -28,7 +28,9 @@ describe('HomePage bootstrap (non-test env)', () => {
     render(<HomePage />);
 
     await waitFor(() => {
-      expect(screen.getByText(/Protect critical airspace/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Resilient detection and 3D tracking for drone swarms in contested airspace/i)
+      ).toBeInTheDocument();
     });
     expect(localStorage.getItem('swarm_home_unlocked')).toBe('1');
     expect(global.fetch).toHaveBeenCalledWith('/api/status', { credentials: 'include' });

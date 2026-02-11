@@ -35,7 +35,7 @@ export default function Navbar() {
   const links = [
     { href: '/product', label: 'Product' },
     { href: '/tech', label: 'Tech' },
-    { href: '/markets', label: 'Markets' },
+    { href: '/markets', label: 'Scenarios' },
     // { href: '/services', label: 'Services' },
     { href: '/resources', label: 'Resources' },
     { href: '/about', label: 'About Us' },

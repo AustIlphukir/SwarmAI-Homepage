@@ -34,7 +34,9 @@ describe('HomePage component', () => {
     // Wait for the effect to set the state and rerender
     await waitFor(() => {
       // The unlocked UI uses the hero heading — assert a visible phrase
-      expect(screen.getByText(/Protect critical airspace/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Resilient detection and 3D tracking for drone swarms in contested airspace/i)
+      ).toBeInTheDocument();
     });
   });
 });

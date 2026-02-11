@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import MarketsPage from '../page';
+import ScenariosPage from '../page';
 
-describe('Markets page', () => {
+describe('Scenarios page', () => {
   it('renders scenario router and scenario links', () => {
-    render(<MarketsPage />);
+    render(<ScenariosPage />);
 
-    expect(screen.getByRole('heading', { name: /Choose your scenario/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Swarm.ai scenarios/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Civil protection scenarios/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Defense & tactical scenarios/i })).toBeInTheDocument();
 

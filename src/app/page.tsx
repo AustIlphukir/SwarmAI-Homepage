@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check, Flag, LoaderCircle } from 'lucide-react';
 import Section from '../components/Section';
 import CtaStrip from '../components/CtaStrip';
 
@@ -107,6 +107,44 @@ export default function HomePage() {
     }
   }
 
+  const maturitySteps: Array<{
+    phase: string;
+    title: string;
+    detail: string;
+    status: 'complete' | 'in-progress' | 'roadmap';
+  }> = [
+    {
+      phase: 'Replay today',
+      title: 'Edge 6D tracking (RGB / thermal)',
+      detail: 'Deployed baseline running on edge compute.',
+      status: 'complete',
+    },
+    {
+      phase: 'Replay today',
+      title: 'Clutter-robust small-object tracking',
+      detail: 'Stable target persistence in low-SNR scenes.',
+      status: 'complete',
+    },
+    {
+      phase: 'Today',
+      title: 'CAD-prompted or class-agnostic tracking',
+      detail: 'Actively tuning model behavior and lock quality.',
+      status: 'in-progress',
+    },
+    {
+      phase: 'Roadmap',
+      title: 'Multi-site pilots + integration hardening',
+      detail: 'Deployment workflows and interfaces at partner sites.',
+      status: 'roadmap',
+    },
+    {
+      phase: 'Roadmap',
+      title: 'Interceptor coordination + certification',
+      detail: 'Partner integration and operational scale-up.',
+      status: 'roadmap',
+    },
+  ];
+
   const ReferencesStrip = ({ compact }: { compact?: boolean }) => {
     return (
       <Section
@@ -121,8 +159,8 @@ export default function HomePage() {
         <div className="rounded-2xl border border-white/10 bg-black/25 p-6">
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-xl border border-white/10 bg-black/20 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">Research</p>
-              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-xs text-textSecondary">
+              <p className="text-sm font-semibold uppercase tracking-[0.12em] text-textSecondary">Research</p>
+              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-sm text-textSecondary">
                 <Image
                   src="/images/partners/TUM.png"
                   alt="TUM logo"
@@ -137,8 +175,8 @@ export default function HomePage() {
             </div>
 
             <div className="rounded-xl border border-white/10 bg-black/20 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">Industry</p>
-              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-xs text-textSecondary">
+              <p className="text-sm font-semibold uppercase tracking-[0.12em] text-textSecondary">Industry</p>
+              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-sm text-textSecondary">
                 <Image
                   src="/images/partners/3dwe_logo_w-dOqrKD5jGKu2DpWa.png.jpeg"
                   alt="3Dwe logo"
@@ -153,8 +191,8 @@ export default function HomePage() {
             </div>
 
             <div className="rounded-xl border border-white/10 bg-black/20 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">Industry</p>
-              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-xs text-textSecondary">
+              <p className="text-sm font-semibold uppercase tracking-[0.12em] text-textSecondary">Industry</p>
+              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-sm text-textSecondary">
                 <Image
                   src="/images/Logo3.png"
                   alt="RV Connex Ltd. logo"
@@ -169,8 +207,8 @@ export default function HomePage() {
             </div>
 
             <div className="rounded-xl border border-white/10 bg-black/20 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">Industry</p>
-              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-xs text-textSecondary">
+              <p className="text-sm font-semibold uppercase tracking-[0.12em] text-textSecondary">Industry</p>
+              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-sm text-textSecondary">
                 <Image
                   src="/images/partners/novamesh-placeholder.svg"
                   alt="NovaMesh placeholder logo"
@@ -185,8 +223,8 @@ export default function HomePage() {
             </div>
 
             <div className="rounded-xl border border-white/10 bg-black/20 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">Industry</p>
-              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-xs text-textSecondary">
+              <p className="text-sm font-semibold uppercase tracking-[0.12em] text-textSecondary">Industry</p>
+              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-sm text-textSecondary">
                 <Image
                   src="/images/partners/lynxgrid-placeholder.svg"
                   alt="LynxGrid placeholder logo"
@@ -201,8 +239,8 @@ export default function HomePage() {
             </div>
 
             <div className="rounded-xl border border-white/10 bg-black/20 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">Industry</p>
-              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-xs text-textSecondary">
+              <p className="text-sm font-semibold uppercase tracking-[0.12em] text-textSecondary">Industry</p>
+              <div className="mt-3 flex min-h-16 items-center justify-center px-2 text-sm text-textSecondary">
                 <Image
                   src="/images/partners/quartzaero-placeholder.svg"
                   alt="QuartzAero placeholder logo"
@@ -217,7 +255,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <p className="mt-6 text-xs text-textSecondary/90">
+          <p className="mt-6 text-sm text-textSecondary/90">
             Logos indicate research collaboration, technical lineage, or early project involvement. They do not imply commercial endorsement.
           </p>
 
@@ -246,7 +284,7 @@ export default function HomePage() {
           <div className="hero-bg-fade" />
         </div>
 
-        <section className="relative isolate min-h-[100dvh] border-b border-[#465644]/60">
+        <section className="relative isolate border-b border-[#465644]/60">
           <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
             <video
               autoPlay
@@ -254,7 +292,7 @@ export default function HomePage() {
               muted
               playsInline
               preload="metadata"
-              className="absolute left-0 right-0 -top-[7%] h-[114%] w-full origin-center object-cover object-center opacity-35 [transform:scaleX(1.04)]"
+              className="absolute left-0 right-0 -top-[7%] h-[114%] max-h-[calc(100%+400px)] w-full origin-center object-cover object-center opacity-35 [transform:scaleX(1.04)]"
             >
               <source src="/videos/source-3.mp4" type="video/mp4" />
             </video>
@@ -263,18 +301,19 @@ export default function HomePage() {
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
             <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
               <div className="space-y-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accentCool">Private preview</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accentCool">Private preview</p>
 
-                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
-                  Resilient 3D tracking for drone swarms<span className="text-accent1">_</span>
+                <h1 className="mb-6 text-center text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-tight">
+                  Resilient detection and 3D tracking of multi-target threats in contested airspace
+                  <span className="text-accent1">_</span>
                 </h1>
 
-                <p className="max-w-2xl text-lg text-textSecondary">
+                <p className="max-w-none text-sm text-textSecondary">
                   Swarm.ai delivers reliable multi-target tracking for low-altitude drone threats—built for
                   clutter, low SNR, degraded comms, and short response timelines.
                   <span className="block mt-2">
-                    You can’t defeat what you can’t track: we turn EO/IR sensor feeds into stable tracks and events at the edge, so
-                    operators and downstream response systems can act in time.
+                    We turn EO/IR sensor feeds into stable tracks and events at the edge so operators and downstream
+                    systems can act in time.
                   </span>
                 </p>
 
@@ -334,7 +373,7 @@ export default function HomePage() {
                 >
                   Unlock
                 </button>
-                <p className="mt-4 text-xs text-textSecondary">
+                <p className="mt-4 text-sm text-textSecondary">
                   No passkey?{' '}
                   <Link href="/contact?intent=request-access" className="text-accent1 hover:underline">
                     Request access
@@ -436,7 +475,7 @@ export default function HomePage() {
 
   return (
     <div className="bg-background">
-      <section className="relative isolate min-h-[100dvh] overflow-hidden border-b border-[#465644]/60">
+      <section className="relative isolate overflow-hidden border-b border-[#465644]/60">
         <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <video
             autoPlay
@@ -444,25 +483,26 @@ export default function HomePage() {
             muted
             playsInline
             preload="metadata"
-            className="absolute left-0 right-0 -top-[7%] h-[114%] w-full origin-center object-cover object-center opacity-35 [transform:scaleX(1.04)]"
+            className="absolute left-0 right-0 -top-[7%] h-[114%] max-h-[calc(100%+400px)] w-full origin-center object-cover object-center opacity-35 [transform:scaleX(1.04)]"
           >
             <source src="/videos/source-3.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-background/55" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accentCool">Swarm.ai</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accentCool"></p>
 
-          <h1 className="mt-3 text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-            Resilient 3D tracking for drone swarms<span className="text-accent1">_</span>
+          <h1 className="mt-3 mb-8 text-center text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+            Resilient detection and 3D tracking of multi-target threats in contested airspace
+            <span className="text-accent1">_</span>
           </h1>
 
-          <p className="mt-4 max-w-3xl text-lg text-textSecondary">
+          <p className="mt-4 max-w-none text-sm text-textSecondary">
             Swarm.ai delivers reliable multi-target tracking for low-altitude drone threats—built for clutter, low SNR,
-            degraded comms, and short response timelines.
+            degraded comms, and real-time requirements.
             <span className="block mt-2">
-              You can’t defeat what you can’t track: we turn EO/IR sensor feeds into stable tracks and events at the edge, so
-              operators and downstream response systems can act in time.
+              We turn EO/IR sensor feeds into stable tracks and events at the edge so operators and downstream systems
+              can act in time.
             </span>
           </p>
 
@@ -482,7 +522,7 @@ export default function HomePage() {
                   href="/markets#civil"
                   className="inline-flex items-center gap-2 rounded-lg border border-accent1/40 bg-accent1/10 px-4 py-2 text-sm font-semibold text-accent1 transition-colors hover:bg-accent1/20"
                 >
-                  Explore scenarios <ArrowRight className="h-4 w-4" />
+                  Explore applications <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   href="/product"
@@ -496,7 +536,8 @@ export default function HomePage() {
             <div className="rounded-2xl border border-white/10 bg-black/25 p-6">
               <p className=" font-semibold text-textPrimary">Integrate capabilities (Journey integrators / OEMs)</p>
               <p className="mt-2 text-textSecondary">
-                Sensor-agnostic AI perception edge modules to turn 3D tracking data to actionable low-bandwith payloads.
+                Sensor-agnostic edge AI modules that convert EO/IR feeds into actionable, low-bandwidth tracks and
+                events.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
@@ -516,6 +557,11 @@ export default function HomePage() {
           </div>
 
           <div className="mt-4 rounded-2xl border border-white/10 bg-black/25 p-6">
+            <p className="mb-4 text-sm text-textSecondary">
+              Developed with TUM Photogrammetry &amp; Remote Sensing (Shanghai Ranking #1 in Germany) •
+              Autonomous-driving-grade Edge AI expertise • EU-based hardware integration • Sovereign cloud
+              architecture
+            </p>
             <div className="flex items-center gap-8 overflow-x-auto">
               <Image
                 src="/images/partners/TUM.png"
@@ -615,6 +661,103 @@ export default function HomePage() {
         </div>
       </Section>
 
+      <Section
+        title="Why distributed optical AI"
+        subtitle="Operational outputs should be tracks and events — not a central video pipeline."
+        wrapperClassName="border-t border-[#465644]/60 bg-gradient-to-b from-[#181f17]/60 to-[#111712]/60"
+      >
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+            <p className="text-sm font-semibold text-textPrimary">Optical-first under saturation</p>
+            <p className="mt-2 text-sm text-textSecondary">
+              Radar/RF-only stacks struggle with low-RCS micro-UAVs and decoys.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+            <p className="text-sm font-semibold text-textPrimary">Track-level fusion</p>
+            <p className="mt-2 text-sm text-textSecondary">
+              Share compact tracks/events, not raw video streams.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+            <p className="text-sm font-semibold text-textPrimary">No single point of failure</p>
+            <p className="mt-2 text-sm text-textSecondary">
+              Continue operating under partial node loss and degraded links.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+            <p className="text-sm font-semibold text-textPrimary">Integration surfaces</p>
+            <p className="mt-2 text-sm text-textSecondary">
+              Expose cues, confidence, and audit logs through defined interfaces.
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      <Section
+        title="Our progress"
+        subtitle="Clear separation of what exists today vs. what is in development."
+        wrapperClassName="border-t border-[#465644]/60 bg-gradient-to-b from-[#171d16]/60 to-[#121813]/60"
+      >
+        <div className="rounded-2xl border border-white/10 bg-black/25 p-5 md:p-7">
+          <div className="overflow-x-auto pb-1">
+            <div className="min-w-[920px]">
+              <div className="relative">
+                <div className="pointer-events-none absolute left-[10%] right-[10%] top-14 h-[3px] rounded-full bg-gradient-to-r from-emerald-300 via-cyan-300 to-sky-300/70" />
+                <ol className="relative grid grid-cols-5 gap-3">
+                  {maturitySteps.map((step) => (
+                    <li key={step.title} className="relative flex flex-col items-center text-center">
+                      <span
+                        className={`mb-6 flex h-10 w-10 items-center justify-center rounded-full border ${
+                          step.status === 'complete'
+                            ? 'border-emerald-300/70 bg-emerald-300 text-[#092314]'
+                            : step.status === 'in-progress'
+                              ? 'border-amber-300/70 bg-amber-200/95 text-[#2b1d05]'
+                              : 'border-sky-300/60 bg-sky-200/95 text-[#06263a]'
+                        }`}
+                        aria-hidden="true"
+                      >
+                        {step.status === 'complete' && <Check className="h-5 w-5" />}
+                        {step.status === 'in-progress' && <LoaderCircle className="h-5 w-5 animate-spin" />}
+                        {step.status === 'roadmap' && <Flag className="h-5 w-5" />}
+                      </span>
+                      <span
+                        className={`absolute left-1/2 top-12 h-4 w-4 -translate-x-1/2 rounded-full border-4 ${
+                          step.status === 'complete'
+                            ? 'border-emerald-300 bg-emerald-100'
+                            : step.status === 'in-progress'
+                              ? 'border-amber-300 bg-amber-100'
+                              : 'border-sky-300 bg-sky-100'
+                        }`}
+                        aria-hidden="true"
+                      />
+                      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-textSecondary">{step.phase}</p>
+                      <p className="mt-2 text-sm font-semibold text-textPrimary">{step.title}</p>
+                      <p className="mt-2 text-sm text-textSecondary">{step.detail}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-textSecondary">
+            <div className="flex items-center gap-2">
+              <Check className="h-4 w-4 text-emerald-300" />
+              <span>Replay today</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <LoaderCircle className="h-4 w-4 animate-spin text-amber-300" />
+              <span>Today (in progress)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Flag className="h-4 w-4 text-sky-300" />
+              <span>Roadmap</span>
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* <ReferencesStrip /> */}
 
       <Section
@@ -653,7 +796,7 @@ export default function HomePage() {
           </>
         }
         primary={{ href: '/contact?intent=pilot-discussion', label: 'Discuss a pilot' }}
-        secondary={{ href: '/services', label: 'See engagement model' }}
+        secondary={{ href: '/product', label: 'Platform overview' }}
       />
 
       <section className="w-full py-8 bg-background border-t border-[#465644]/60">
@@ -665,7 +808,7 @@ export default function HomePage() {
                 About
               </Link>
               <Link href="/markets" className="hover:underline">
-                Markets
+                Scenarios
               </Link>
               <Link href="/contact" className="hover:underline">
                 Contact

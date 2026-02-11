@@ -14,5 +14,7 @@ test('video element present in unlocked render (smoke)', () => {
   // simple smoke check: architecture section exists
   expect(container.textContent).toMatch(/Architecture for real operations/i);
   expect(container.textContent).not.toMatch(/Architecture \(tracks, not pixels\)/i);
-  expect(container.textContent).toMatch(/Protect critical airspace with reliable early drone detection/i);
+  expect(container.textContent).toMatch(
+    /Resilient detection and 3D tracking for drone swarms in contested airspace/i
+  );
 });
