@@ -36,7 +36,7 @@ export default function Navbar() {
     { href: '/product', label: 'Product' },
     { href: '/tech', label: 'Tech' },
     { href: '/markets', label: 'Markets' },
-    { href: '/services', label: 'Services' },
+    // { href: '/services', label: 'Services' },
     { href: '/resources', label: 'Resources' },
     { href: '/about', label: 'About Us' },
     { href: '/contact', label: 'Contact' },

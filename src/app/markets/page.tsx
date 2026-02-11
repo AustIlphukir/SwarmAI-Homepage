@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { ArrowRight, Building2, Factory, Landmark, Shield, TowerControl, Users } from 'lucide-react';
+import { ArrowRight, BatteryCharging, Building2, Factory, Shield, Target, TowerControl, Users } from 'lucide-react';
 import Section from '../../components/Section';
 import CtaStrip from '../../components/CtaStrip';
 
@@ -62,10 +62,52 @@ export default function MarketsPage() {
       </section>
 
       <Section
+        id="defense"
+        title="Defense & tactical scenarios"
+        subtitle="Mobile, distributed, battery-powered sensors can be deployed on demand in the field. Degraded communications, mobility, and multi-target behavior are the baseline."
+        wrapperClassName="pt-16"
+      >
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <ScenarioCard
+            title="Mobile field deployment"
+            subtitle="Deploy a distributed, battery-powered sensor mesh on demand in the field."
+            icon={<BatteryCharging className="h-5 w-5" />}
+            href="/markets/interceptor-guidance"
+            bullets={[
+              'Rapid setup with mobile nodes and flexible placement',
+              'Distributed coverage that keeps operating under comms stress',
+              'Battery-powered operation for temporary and shifting missions',
+            ]}
+          />
+          <ScenarioCard
+            title="Interceptor data & AI guidance"
+            subtitle="Decision-ready tracks and AI guidance to support interceptor workflows."
+            icon={<Target className="h-5 w-5" />}
+            href="/markets/interceptor-guidance"
+            bullets={[
+              'Prioritized tracks and confidence scoring for operator focus',
+              'AI guidance cues for interceptor assignment and timing',
+              'Integration-ready outputs for command and fire-control stacks',
+            ]}
+          />
+          <ScenarioCard
+            title="Border / perimeter"
+            subtitle="Wide-area monitoring across large boundaries and terrain variability."
+            icon={<Building2 className="h-5 w-5" />}
+            href="/markets/border-perimeter"
+            bullets={[
+              'Coverage planning via sensor density',
+              'Low-bandwidth track/event exchange',
+              'Integration-first exports to existing systems',
+            ]}
+          />
+        </div>
+      </Section>
+
+      <Section
         id="civil"
         title="Civil protection scenarios"
         subtitle="Critical infrastructure and public safety contexts where false alarms, privacy, and uptime matter."
-        wrapperClassName="pt-16"
       >
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <ScenarioCard
@@ -115,37 +157,6 @@ export default function MarketsPage() {
         </div>
       </Section>
 
-      <Section
-        id="defense"
-        title="Defense & tactical scenarios"
-        subtitle="Degraded communications, mobility, and multi-target behavior are the baseline."
-      >
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <ScenarioCard
-            title="Tactical base protection"
-            subtitle="Distributed sensing built for degraded comms and contested environments."
-            icon={<Landmark className="h-5 w-5" />}
-            href="/markets/tactical-base"
-            bullets={[
-              'Graceful degradation without central dependency',
-              'Track-to-track fusion across nodes',
-              'Policy-driven escalation with human authorization',
-            ]}
-          />
-          <ScenarioCard
-            title="Border / perimeter"
-            subtitle="Wide-area monitoring across large boundaries and terrain variability."
-            icon={<Building2 className="h-5 w-5" />}
-            href="/markets/border-perimeter"
-            bullets={[
-              'Coverage planning via sensor density',
-              'Low-bandwidth track/event exchange',
-              'Integration-first exports to existing systems',
-            ]}
-          />
-        </div>
-      </Section>
-
       <CtaStrip
         kicker="Next step"
         title="Tell us your scenario and constraints"
@@ -177,4 +188,3 @@ export default function MarketsPage() {
     </div>
   );
 }
-

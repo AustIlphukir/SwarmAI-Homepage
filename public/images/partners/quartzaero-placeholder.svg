@@ -1,0 +1,6 @@
+<svg width="360" height="96" viewBox="0 0 360 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="1" y="1" width="358" height="94" rx="18" stroke="#2A3946" stroke-width="2"/>
+  <path d="M34 62L50 30L66 62H34Z" stroke="#A7B3C4" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M42 52H58" stroke="#A7B3C4" stroke-width="3" stroke-linecap="round"/>
+  <text x="88" y="58" fill="#F7FAFC" font-family="Space Grotesk, system-ui, sans-serif" font-size="28" font-weight="700">QuartzAero</text>
+</svg>

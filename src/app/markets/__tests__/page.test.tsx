@@ -13,7 +13,7 @@ describe('Markets page', () => {
     expect(screen.getByRole('heading', { name: /Energy & utilities/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Prisons/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Major events/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Tactical base protection/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Interceptor data & AI guidance/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Border \/ perimeter/i })).toBeInTheDocument();
 
     const scenarioLinks = screen.getAllByRole('link', { name: /View scenario/i });

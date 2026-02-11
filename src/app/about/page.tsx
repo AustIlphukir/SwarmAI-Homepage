@@ -39,7 +39,7 @@ export default function AboutPage() {
       </section>
 
       <Section
-        title="Why we’re qualified"
+        title="From research to application"
         subtitle="A blend of world-class remote sensing and 3D professionals focused on deployment."
         wrapperClassName="pt-16"
       >

@@ -35,7 +35,7 @@ describe('Navbar component', () => {
   it('renders all navigation links with correct labels and hrefs', () => {
     render(<Navbar />);
     // Check each navigation link individually.  The Navbar defines
-    // links to /markets, /product, /tech, /services, /resources, /about and /contact.  We use
+    // links to /markets, /product, /tech, /resources, /about and /contact. We use
     // getByRole to find the link by its accessible name and then
     // assert that the href matches the expected path.
     const marketsLink = screen.getByRole('link', { name: 'Markets' });
@@ -44,8 +44,6 @@ describe('Navbar component', () => {
     expect(coreLink).toHaveAttribute('href', '/tech');
     const productLink = screen.getByRole('link', { name: 'Product' });
     expect(productLink).toHaveAttribute('href', '/product');
-    const servicesLink = screen.getByRole('link', { name: 'Services' });
-    expect(servicesLink).toHaveAttribute('href', '/services');
     const resourcesLink = screen.getByRole('link', { name: 'Resources' });
     expect(resourcesLink).toHaveAttribute('href', '/resources');
     const aboutLink = screen.getByRole('link', { name: 'About Us' });
