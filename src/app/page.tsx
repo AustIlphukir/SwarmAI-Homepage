@@ -662,8 +662,7 @@ export default function HomePage() {
               platforms through a defined interface in permissioned contexts.
             </p>
           </div>
-        </div>
-      </Section>
+        </Section>
 
       <Section
         title="Why distributed optical AI"
@@ -695,8 +694,7 @@ export default function HomePage() {
               Expose cues, confidence, and audit logs through defined interfaces.
             </p>
           </div>
-        </div>
-      </Section>
+        </Section>
 
       <Section
         title="Our progress"
@@ -743,7 +741,6 @@ export default function HomePage() {
                 </ol>
               </div>
             </div>
-          </div>
 
           <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-textSecondary">
             <div className="flex items-center gap-2">
