@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import HomePage from '../page';
+import HomePage, { HOME_ARCHITECTURE_HEADING, HOME_HERO_HEADING } from '../page';
 
 describe('HomePage unlocked view', () => {
   beforeEach(() => {
@@ -13,11 +13,7 @@ describe('HomePage unlocked view', () => {
 
   test('renders hero text and contact link', () => {
     render(<HomePage />);
-    expect(
-      screen.getByRole('heading', {
-        name: /Resilient detection and 3D tracking for drone swarms in contested airspace/i,
-      })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: new RegExp(HOME_HERO_HEADING, 'i') })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Discuss a pilot/i })).toBeInTheDocument();
   });
 
@@ -25,7 +21,7 @@ describe('HomePage unlocked view', () => {
     render(<HomePage />);
     expect(screen.getByRole('link', { name: /Explore applications/i })).toHaveAttribute('href', '/markets#civil');
     expect(screen.getByRole('link', { name: /Integration path/i })).toHaveAttribute('href', '/partners/integrators');
-    expect(screen.getByRole('heading', { name: /Architecture for real operations/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: new RegExp(HOME_ARCHITECTURE_HEADING, 'i') })).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: /Architecture \(tracks, not pixels\)/i })).not.toBeInTheDocument();
   });
 });

@@ -5,6 +5,10 @@ import { ArrowRight, BatteryCharging, Building2, Factory, Shield, Target, TowerC
 import Section from '../../components/Section';
 import CtaStrip from '../../components/CtaStrip';
 
+export const MARKETS_PAGE_TITLE = 'Swarm.ai scenarios';
+export const MARKETS_DEFENSE_SECTION_TITLE = 'Defense scenarios (focus)';
+export const MARKETS_CRITICAL_INFRA_SECTION_TITLE = 'Critical infrastructure scenarios (focus)';
+
 function StepCard({ n, title, desc }: { n: string; title: string; desc: string }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
@@ -75,7 +79,7 @@ export default function ScenariosPage() {
       <section className="relative rounded-3xl border border-white/10 bg-gradient-to-br from-[#0f1922] via-[#111d28] to-[#0f151d] p-8 shadow-[0_32px_80px_rgba(0,0,0,0.4)] sm:p-12">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accentCool">Scenarios</p>
         <h1 className="mt-3 max-w-4xl text-3xl font-semibold leading-tight text-textPrimary sm:text-5xl">
-          Swarm.ai scenarios
+          {MARKETS_PAGE_TITLE}
           <span className="text-accent1">_</span>
         </h1>
         <p className="mt-4 max-w-3xl text-base leading-relaxed text-textSecondary">
@@ -184,7 +188,7 @@ export default function ScenariosPage() {
 
       <Section
         id="defense"
-        title="Defense scenarios (focus)"
+        title={MARKETS_DEFENSE_SECTION_TITLE}
         subtitle="Distributed sensing under degraded comms and mobility constraints. Outputs are designed for integration into existing command and control stacks."
         wrapperClassName="pt-16"
       >
@@ -254,7 +258,7 @@ export default function ScenariosPage() {
 
       <Section
         id="civil"
-        title="Critical infrastructure scenarios (focus)"
+        title={MARKETS_CRITICAL_INFRA_SECTION_TITLE}
         subtitle="Regulated environments where false alarms, privacy boundaries, uptime, and auditability matter."
       >
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

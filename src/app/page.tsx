@@ -7,6 +7,10 @@ import { ArrowRight, Check, Flag, LoaderCircle } from 'lucide-react';
 import Section from '../components/Section';
 import CtaStrip from '../components/CtaStrip';
 
+export const HOME_HERO_HEADING =
+  'Resilient detection and 3D tracking of multi-target threats in contested airspace';
+export const HOME_ARCHITECTURE_HEADING = 'Architecture for real operations';
+
 export default function HomePage() {
   const [enteredKey, setEnteredKey] = useState('');
   const [unlocked, setUnlocked] = useState(false);
@@ -304,7 +308,7 @@ export default function HomePage() {
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accentCool">Private preview</p>
 
                 <h1 className="mb-6 text-center text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-tight">
-                  Resilient detection and 3D tracking of multi-target threats in contested airspace
+                  {HOME_HERO_HEADING}
                   <span className="text-accent1">_</span>
                 </h1>
 
@@ -493,7 +497,7 @@ export default function HomePage() {
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accentCool"></p>
 
           <h1 className="mt-3 mb-8 text-center text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
-            Resilient detection and 3D tracking of multi-target threats in contested airspace
+            {HOME_HERO_HEADING}
             <span className="text-accent1">_</span>
           </h1>
 
@@ -611,7 +615,7 @@ export default function HomePage() {
       </section>
 
       <Section
-        title="Architecture for real operations"
+        title={HOME_ARCHITECTURE_HEADING}
         subtitle="Distributed sensor mesh processes EO/IR at the edge and shares events—not video. Multi-node fusion maintains stable tracks and optional compact 3D updates from minimal data. Designed to remain operational under degraded links and adapt to previously unseen targets."
         wrapperClassName="border-t border-[#465644]/60 bg-gradient-to-b from-[#171d16]/60 to-[#121813]/60"
       >

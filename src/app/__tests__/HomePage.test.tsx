@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import HomePage from '../page';
+import HomePage, { HOME_HERO_HEADING } from '../page';
 
 // Mock fetch for the unlock API.  In these tests we are not
 // exercising the network call so we provide a dummy implementation
@@ -33,10 +33,7 @@ describe('HomePage component', () => {
     render(<HomePage />);
     // Wait for the effect to set the state and rerender
     await waitFor(() => {
-      // The unlocked UI uses the hero heading — assert a visible phrase
-      expect(
-        screen.getByText(/Resilient detection and 3D tracking for drone swarms in contested airspace/i)
-      ).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: new RegExp(HOME_HERO_HEADING, 'i') })).toBeInTheDocument();
     });
   });
 });

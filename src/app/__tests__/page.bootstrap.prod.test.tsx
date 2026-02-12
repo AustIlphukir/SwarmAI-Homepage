@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import HomePage from '../page';
+import HomePage, { HOME_HERO_HEADING } from '../page';
 
 describe('HomePage bootstrap (non-test env)', () => {
   const originalEnv = process.env.NODE_ENV;
@@ -28,9 +28,7 @@ describe('HomePage bootstrap (non-test env)', () => {
     render(<HomePage />);
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/Resilient detection and 3D tracking for drone swarms in contested airspace/i)
-      ).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: new RegExp(HOME_HERO_HEADING, 'i') })).toBeInTheDocument();
     });
     expect(localStorage.getItem('swarm_home_unlocked')).toBe('1');
     expect(global.fetch).toHaveBeenCalledWith('/api/status', { credentials: 'include' });
