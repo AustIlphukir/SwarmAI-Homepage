@@ -8,7 +8,7 @@ import Section from '../components/Section';
 import CtaStrip from '../components/CtaStrip';
 
 export const HOME_HERO_HEADING =
-  'Resilient detection and 3D tracking of multi-target threats in contested airspace';
+  'Resilient tracking in contested airspace';
 export const HOME_ARCHITECTURE_HEADING = 'Architecture for real operations';
 
 export default function HomePage() {
