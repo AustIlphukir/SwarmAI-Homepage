@@ -12,7 +12,7 @@ test('video element present in unlocked render (smoke)', () => {
   localStorage.setItem('swarm_home_unlocked', '1');
   const { container } = render(<PageModule.default />);
   // simple smoke check: architecture section exists
-  expect(container.textContent).toMatch(/Architecture for real operations/i);
+  expect(container.textContent).toContain(PageModule.HOME_ARCHITECTURE_HEADING);
   expect(container.textContent).not.toMatch(/Architecture \(tracks, not pixels\)/i);
-  expect(container.textContent).toMatch(/Protect critical airspace with reliable early drone detection/i);
+  expect(screen.getByRole('heading', { name: new RegExp(PageModule.HOME_HERO_HEADING, 'i') })).toBeInTheDocument();
 });

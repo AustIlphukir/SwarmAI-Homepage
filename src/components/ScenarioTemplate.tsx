@@ -138,7 +138,7 @@ export default function ScenarioTemplate({
           href="/markets"
           className="rounded-lg border border-white/20 px-4 py-2 text-textPrimary transition-colors hover:border-accentCool/50 hover:text-accentCool"
         >
-          Back to Markets
+          Back to Scenarios
         </Link>
         <Link
           href="/contact?intent=talk-to-an-engineer"

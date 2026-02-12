@@ -22,7 +22,7 @@ describe('HomePage funnel CTAs', () => {
   test('unlocked view shows scenario and integration routing', () => {
     localStorage.setItem('swarm_home_unlocked', '1');
     render(<HomePage />);
-    expect(screen.getByRole('link', { name: /Explore scenarios/i })).toHaveAttribute('href', '/markets#civil');
+    expect(screen.getByRole('link', { name: /Explore applications/i })).toHaveAttribute('href', '/markets#civil');
     expect(screen.getByRole('link', { name: /Integration path/i })).toHaveAttribute('href', '/partners/integrators');
   });
 });

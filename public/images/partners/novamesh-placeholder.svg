@@ -1,0 +1,7 @@
+<svg width="360" height="96" viewBox="0 0 360 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="1" y="1" width="358" height="94" rx="18" stroke="#2A3946" stroke-width="2"/>
+  <circle cx="50" cy="48" r="16" stroke="#4CC9F0" stroke-width="4"/>
+  <circle cx="50" cy="48" r="5" fill="#4CC9F0"/>
+  <path d="M50 24V14M50 82V72M74 48H84M16 48H26M67 31L74 24M26 72L33 65M67 65L74 72M26 24L33 31" stroke="#4CC9F0" stroke-width="3" stroke-linecap="round"/>
+  <text x="88" y="58" fill="#F7FAFC" font-family="Space Grotesk, system-ui, sans-serif" font-size="28" font-weight="700">NovaMesh</text>
+</svg>

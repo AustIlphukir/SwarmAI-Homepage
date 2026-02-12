@@ -12,7 +12,7 @@ import AirportsScenarioPage from '../markets/airports/page';
 import EnergyScenarioPage from '../markets/energy/page';
 import PrisonsScenarioPage from '../markets/prisons/page';
 import EventsScenarioPage from '../markets/events/page';
-import TacticalBaseScenarioPage from '../markets/tactical-base/page';
+import InterceptorGuidanceScenarioPage from '../markets/interceptor-guidance/page';
 import BorderPerimeterScenarioPage from '../markets/border-perimeter/page';
 
 describe('Funnel new pages (smoke)', () => {
@@ -63,9 +63,9 @@ describe('Funnel new pages (smoke)', () => {
     expect(screen.getByRole('heading', { name: /Major events/i })).toBeInTheDocument();
     ev.unmount();
 
-    const t = render(<TacticalBaseScenarioPage />);
-    expect(screen.getByRole('heading', { name: /Tactical base protection/i })).toBeInTheDocument();
-    t.unmount();
+    const i = render(<InterceptorGuidanceScenarioPage />);
+    expect(screen.getByRole('heading', { name: /Interceptor data & AI guidance/i })).toBeInTheDocument();
+    i.unmount();
 
     const b = render(<BorderPerimeterScenarioPage />);
     expect(screen.getByRole('heading', { name: /Border \/ perimeter/i })).toBeInTheDocument();

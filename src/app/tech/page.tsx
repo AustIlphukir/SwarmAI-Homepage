@@ -108,17 +108,24 @@ function DemoTile({
   href,
   cta,
   proofText,
+  placeholderLabel,
+  externalHref = false,
 }: {
   title: string;
   proves: string;
   href: string;
   cta: string;
   proofText: string;
+  placeholderLabel: string;
+  externalHref?: boolean;
 }) {
+  const ctaClassName =
+    'inline-flex items-center gap-2 rounded-lg border border-accent1/40 bg-accent1/10 px-4 py-2 text-sm font-semibold text-accent1 transition-colors hover:bg-accent1/20';
+
   return (
     <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
       <div className="flex aspect-video items-center justify-center rounded-xl border border-white/10 bg-black/20 p-4 text-center text-xs text-textSecondary">
-        Thumbnail placeholder
+        {placeholderLabel}
       </div>
       <p className="mt-3 text-sm font-semibold text-textPrimary">{title}</p>
       <p className="mt-2 text-sm text-textSecondary">
@@ -126,13 +133,17 @@ function DemoTile({
       </p>
       <ProofHook className="mt-4" items={[{ type: 'Demo', text: proofText }]} />
       <div className="mt-4">
-        <Link
-          href={href}
-          className="inline-flex items-center gap-2 rounded-lg border border-accent1/40 bg-accent1/10 px-4 py-2 text-sm font-semibold text-accent1 transition-colors hover:bg-accent1/20"
-        >
-          {cta}
-          <ArrowRight className="h-4 w-4" />
-        </Link>
+        {externalHref ? (
+          <a href={href} target="_blank" rel="noreferrer" className={ctaClassName}>
+            {cta}
+            <ArrowRight className="h-4 w-4" />
+          </a>
+        ) : (
+          <Link href={href} className={ctaClassName}>
+            {cta}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        )}
       </div>
     </div>
   );
@@ -148,7 +159,7 @@ export default function TechPage() {
         <section className="relative rounded-3xl border border-white/10 bg-gradient-to-br from-[#0f1922] via-[#111d28] to-[#0f151d] p-8 shadow-[0_32px_80px_rgba(0,0,0,0.4)] sm:p-12">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accentCool">Tech</p>
           <h1 className="mt-3 max-w-4xl text-3xl font-semibold leading-tight text-textPrimary sm:text-5xl">
-            World-leading capabilities in 3D perception, remote sensing, and autonomous systems
+            3D perception and remote sensing engineered for low-altitude, cluttered airspace
             <span className="text-accent1">_</span>
           </h1>
           <p className="mt-4 max-w-4xl text-base leading-relaxed text-textSecondary">
@@ -156,24 +167,74 @@ export default function TechPage() {
             clutter, low SNR, degraded comms, and short timelines.
           </p>
           <div className="mt-6 max-w-5xl rounded-2xl border border-white/10 bg-black/25 p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-textSecondary">Lineage</p>
+            <ul className="mt-3 grid gap-2 text-sm text-textSecondary md:grid-cols-2">
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accentCool" />
+                Built with TUM Photogrammetry &amp; Remote Sensing (remote sensing + multi-view geometry).
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accentCool" />
+                Team includes experts from autonomous driving perception (production-grade constraints).
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accentCool" />
+                Edge and mobile AI architecture expertise (on-device inference, low power, low latency).
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accentCool" />
+                Focus: track-level intelligence and distributed fusion, designed for degraded comms.
+              </li>
+            </ul>
+          </div>
+          <div className="mt-6 max-w-5xl rounded-2xl border border-white/10 bg-black/25 p-5">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-textSecondary">Evidence strip</p>
             <div className="mt-3 grid gap-3 md:grid-cols-3">
               <div className="rounded-lg border border-white/10 bg-card/40 p-3 text-sm text-textSecondary">
-                [PROOF: Demo links] 3D recon, 6D pose, fusion demo
+                <p>Demos: 6D pose | EO/IR detect-&gt;track continuity | fusion replay</p>
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold">
+                  <Link href="/tech#demos" className="text-accent1 hover:underline">
+                    /tech#demos
+                  </Link>
+                  <Link href="/contact?intent=request-access" className="text-accent1 hover:underline">
+                    /contact?intent=request-access
+                  </Link>
+                  <a
+                    href="https://3dtwin.3dwe.org/burda_senatorre.html"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-accent1 hover:underline"
+                  >
+                    External demo
+                  </a>
+                </div>
               </div>
               <div className="rounded-lg border border-white/10 bg-card/40 p-3 text-sm text-textSecondary">
-                [PROOF: Publications/partners] TUM + public references
+                <p>Public references: TUM group | selected publications | partners</p>
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold">
+                  <Link href="/tech#public-references" className="text-accent1 hover:underline">
+                    /tech#public-references
+                  </Link>
+                  <Link href="/partners/integrators" className="text-accent1 hover:underline">
+                    Partner ecosystem
+                  </Link>
+                </div>
               </div>
               <div className="rounded-lg border border-white/10 bg-card/40 p-3 text-sm text-textSecondary">
-                [PROOF: Benchmarks] latency, false alarms, track continuity
+                <p>Benchmarks: latency | false alarms | track continuity (pilot metrics)</p>
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold">
+                  <Link href="/tech#benchmarks" className="text-accent1 hover:underline">
+                    /tech#benchmarks
+                  </Link>
+                </div>
               </div>
             </div>
             <ProofHook
               className="mt-4"
               items={[
-                { type: 'Demo', text: '3D recon / 6D pose / fusion demo links' },
-                { type: 'Publication', text: 'TUM + public references placeholder' },
-                { type: 'Benchmark', text: 'Latency + false alarms + continuity placeholder' },
+                { type: 'Demo', text: '6D pose + EO/IR continuity + fusion replay links' },
+                { type: 'Publication', text: 'TUM references + selected publications + partners' },
+                { type: 'Benchmark', text: 'Latency + false alarms + continuity pilot metrics placeholders' },
               ]}
             />
           </div>
@@ -193,8 +254,22 @@ export default function TechPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-textSecondary">
               Architecture diagram (placeholder)
             </p>
-            <div className="mt-3 flex aspect-video items-center justify-center rounded-xl border border-white/10 bg-black/20 p-4 text-center text-sm text-textSecondary">
-              Diagram: EO/IR → edge perception → distributed fusion → tracks/events → C2/operator
+            <div className="mt-3 rounded-xl border border-white/10 bg-black/20 p-5">
+              <div className="mx-auto flex max-w-xl flex-col items-stretch gap-2 text-sm text-textSecondary">
+                <div className="rounded-lg border border-white/10 bg-card/40 px-4 py-3 text-center">EO/IR sensors</div>
+                <p className="text-center text-xs text-textSecondary/80">&darr;</p>
+                <div className="rounded-lg border border-white/10 bg-card/40 px-4 py-3 text-center">
+                  Edge perception (detect/track/optional 6D)
+                </div>
+                <p className="text-center text-xs text-textSecondary/80">&darr;</p>
+                <div className="rounded-lg border border-white/10 bg-card/40 px-4 py-3 text-center">
+                  Track-level fusion (distributed)
+                </div>
+                <p className="text-center text-xs text-textSecondary/80">&darr;</p>
+                <div className="rounded-lg border border-white/10 bg-card/40 px-4 py-3 text-center">
+                  Tracks/events/confidence to C2/operator
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -243,6 +318,75 @@ export default function TechPage() {
               proofType="Demo"
               proofText="Fusion replay under degraded comms and partial views."
             />
+          </div>
+        </div>
+      </Section>
+
+      <Section
+        id="public-references"
+        title="Selected publications & public references"
+        subtitle="Research lineage and relevant technical background (curated)."
+      >
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-textSecondary">Research group</h3>
+            <p className="mt-2 text-sm text-textSecondary">
+              These links provide research lineage and context. They are background references, not direct product
+              claims.
+            </p>
+            <div className="mt-4 space-y-2 text-sm">
+              <a
+                href="https://www.asg.ed.tum.de/en/rsl/start-page/"
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-accent1 hover:underline"
+              >
+                TUM Photogrammetry &amp; Remote Sensing group
+              </a>
+              {/* TODO: replace with the exact Google Scholar profile URL. */}
+              <a href="#" target="_blank" rel="noreferrer" className="block font-semibold text-accent1 hover:underline">
+                Google Scholar profile (placeholder)
+              </a>
+            </div>
+            <ul className="mt-4 space-y-2 text-sm text-textSecondary">
+              <Bullet>Focus: remote sensing, multi-view geometry, and geospatial perception.</Bullet>
+              <Bullet>Related work on robust detection and tracking under noisy, cluttered conditions.</Bullet>
+            </ul>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-textSecondary">
+              Selected papers (curated)
+            </h3>
+            <p className="mt-2 text-sm text-textSecondary">
+              Small set of background, related work, and team publications.
+            </p>
+            {/* TODO: replace placeholder paper URLs with exact publication links (3-6 total). */}
+            <ul className="mt-4 space-y-3 text-sm text-textSecondary">
+              <li className="rounded-lg border border-white/10 bg-card/40 p-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">Background</p>
+                <a href="#" target="_blank" rel="noreferrer" className="mt-1 block font-semibold text-accent1 hover:underline">
+                  Multi-view geometry / photogrammetry
+                </a>
+              </li>
+              <li className="rounded-lg border border-white/10 bg-card/40 p-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">Related work</p>
+                <a href="#" target="_blank" rel="noreferrer" className="mt-1 block font-semibold text-accent1 hover:underline">
+                  3D reconstruction / tracking
+                </a>
+              </li>
+              <li className="rounded-lg border border-white/10 bg-card/40 p-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">Team publications</p>
+                <a href="#" target="_blank" rel="noreferrer" className="mt-1 block font-semibold text-accent1 hover:underline">
+                  6D pose estimation / open-set
+                </a>
+              </li>
+              <li className="rounded-lg border border-white/10 bg-card/40 p-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent1">Related work</p>
+                <a href="#" target="_blank" rel="noreferrer" className="mt-1 block font-semibold text-accent1 hover:underline">
+                  Distributed fusion / track correlation
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </Section>
@@ -341,7 +485,7 @@ export default function TechPage() {
                 className="mt-4"
                 items={[
                   { type: 'Integration artifact', text: 'Interface spec excerpt placeholder' },
-                  { type: 'Test report', text: 'Cue-only vs execute gating state machine' },
+                  { type: 'Test report', text: 'Cue-only vs partner-executed response gating state machine' },
                 ]}
               />
             </div>
@@ -358,8 +502,24 @@ export default function TechPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-textSecondary">
               Staged flow diagram (placeholder)
             </p>
-            <div className="mt-3 flex items-center justify-center rounded-lg border border-white/10 bg-background/20 p-4 text-center text-sm text-textSecondary">
-              Track only -&gt; Strengthen posterior -&gt; Response readiness -&gt; Execute -&gt; Abort/safe -&gt; Post-action verification
+            <div className="mt-3 rounded-lg border border-white/10 bg-background/20 p-4">
+              <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-textSecondary">
+                <span className="rounded-md border border-white/10 bg-card/40 px-3 py-2">Observe</span>
+                <span>-&gt;</span>
+                <span className="rounded-md border border-white/10 bg-card/40 px-3 py-2">Alert</span>
+                <span>-&gt;</span>
+                <span className="rounded-md border border-white/10 bg-card/40 px-3 py-2">Ready</span>
+              </div>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-sm text-textSecondary">
+                <span className="rounded-md border border-white/10 bg-card/40 px-3 py-2">
+                  Engage (permissioned contexts)
+                </span>
+                <span>-&gt;</span>
+                <span className="rounded-md border border-white/10 bg-card/40 px-3 py-2">Verify</span>
+              </div>
+              <p className="mt-3 text-center text-xs text-textSecondary">
+                Abort branch: at any stage -&gt; safe state, logged for audit.
+              </p>
             </div>
           </div>
 
@@ -368,7 +528,7 @@ export default function TechPage() {
               'Track only',
               'Strengthen posterior',
               'Response readiness (cue only + interlocks)',
-              'Execute (permissioned contexts)',
+              'Partner executed response (permissioned contexts)',
               'Abort/safe state',
               'Post-action verification',
             ].map((label, idx) => (
@@ -389,7 +549,8 @@ export default function TechPage() {
             ]}
           />
           <p className="mt-4 text-xs text-textSecondary">
-            Final behavior depends on customer policy, authorization requirements, and the selected effector platform.
+            Final behavior depends on customer policy, authorization requirements, and partner-executed response
+            interfaces.
           </p>
         </div>
       </Section>
@@ -413,29 +574,91 @@ export default function TechPage() {
         </div>
       </Section>
 
-      <Section title="Demos (evidence hub)" subtitle="Each demo states what it proves.">
-        <div className="grid gap-4 md:grid-cols-3">
+      <Section id="demos" title="Demos (evidence hub)" subtitle="Each demo states what it proves.">
+        <div className="grid gap-4 md:grid-cols-2">
           <DemoTile
-            title="Edge-based 3D reconstruction demo"
-            proves="3D-from-edge with minimal data footprint."
-            href="https://3dtwin.3dwe.org/burda_senatorre.html"
-            cta="View edge-based 3D reconstruction demo"
-            proofText="Video link"
+            title="EO/IR detect->track continuity"
+            proves="Track stability through clutter, motion, and low-SNR transitions."
+            href="/contact?intent=request-access"
+            cta="Request EO/IR continuity demo access"
+            proofText="EO/IR continuity clip placeholder"
+            placeholderLabel="Video placeholder - replace with EO/IR clip"
           />
           <DemoTile
             title="Real-time 6D pose estimation"
             proves="Tracking stability and pose outputs under real conditions."
             href="/pose"
             cta="View real-time 6D pose estimation"
-            proofText="Video link"
+            proofText="6D pose clip placeholder"
+            placeholderLabel="Video placeholder - replace with 6D pose clip"
           />
           <DemoTile
             title="Multi-node fusion replay"
             proves="Track correlation and de-dup under partial observability."
-            href="/contact?intent=pilot-discussion"
-            cta="Request a fusion demo"
-            proofText="Video link"
+            href="/contact?intent=request-access"
+            cta="Request fusion replay access"
+            proofText="Fusion replay screen capture placeholder"
+            placeholderLabel="Video placeholder - replace with fusion replay screen capture"
           />
+          <DemoTile
+            title="Detect->track latency instrumentation"
+            proves="Measured timing under clutter and degraded comms."
+            href="/contact?intent=request-access"
+            cta="Request latency instrumentation trace"
+            proofText="Latency instrumentation trace placeholder"
+            placeholderLabel="Video placeholder - replace with latency instrumentation trace"
+          />
+        </div>
+      </Section>
+
+      <Section
+        id="benchmarks"
+        title="Benchmarks & pilot metrics"
+        subtitle="How we measure false alarms, latency, and continuity in repeatable conditions."
+      >
+        <div className="grid gap-4 md:grid-cols-3">
+          <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
+            <p className="text-sm font-semibold text-textPrimary">Latency</p>
+            <p className="mt-2 text-sm text-textSecondary">
+              detect-&gt;track time distribution with timestamped stage transitions and node-local clocks.
+            </p>
+            <ProofHook
+              className="mt-4"
+              items={[
+                { type: 'Benchmark', text: 'Latency benchmark definition placeholder' },
+                { type: 'Test report', text: 'Latency instrumentation report placeholder' },
+                { type: 'Pilot metric', text: 'Pilot latency acceptance band placeholder' },
+              ]}
+            />
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
+            <p className="text-sm font-semibold text-textPrimary">False alarms</p>
+            <p className="mt-2 text-sm text-textSecondary">
+              Per-minute false alarm rate under clutter, stratified by scene class and environmental condition.
+            </p>
+            <ProofHook
+              className="mt-4"
+              items={[
+                { type: 'Benchmark', text: 'False alarm benchmark definition placeholder' },
+                { type: 'Test report', text: 'Clutter stress-test report placeholder' },
+                { type: 'Pilot metric', text: 'Pilot false alarm threshold placeholder' },
+              ]}
+            />
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
+            <p className="text-sm font-semibold text-textPrimary">Continuity</p>
+            <p className="mt-2 text-sm text-textSecondary">
+              Track fragmentation rate across occlusions and handoffs between nodes in distributed fusion.
+            </p>
+            <ProofHook
+              className="mt-4"
+              items={[
+                { type: 'Benchmark', text: 'Continuity benchmark definition placeholder' },
+                { type: 'Test report', text: 'Occlusion continuity replay placeholder' },
+                { type: 'Pilot metric', text: 'Pilot continuity target placeholder' },
+              ]}
+            />
+          </div>
         </div>
       </Section>
 

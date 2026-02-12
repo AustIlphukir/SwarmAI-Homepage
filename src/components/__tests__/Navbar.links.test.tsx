@@ -5,7 +5,7 @@ import Navbar from '../Navbar';
 describe('Navbar links', () => {
   test('renders main navigation links', () => {
     render(<Navbar />);
-    expect(screen.getByText(/Markets/i)).toBeInTheDocument();
+    expect(screen.getByText(/Scenarios/i)).toBeInTheDocument();
     expect(screen.getByText(/Tech/i)).toBeInTheDocument();
     expect(screen.getByText(/About/i)).toBeInTheDocument();
     expect(screen.getByText(/Product/i)).toBeInTheDocument();

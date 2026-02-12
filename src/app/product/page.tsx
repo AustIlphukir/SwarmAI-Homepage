@@ -67,6 +67,33 @@ function LayerBlock({
   );
 }
 
+function DiagramPlaceholder({
+  title,
+  children,
+}: {
+  title: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
+      <p className="text-sm font-semibold text-textPrimary">{title}</p>
+      {children ? (
+        <div className="mt-4">{children}</div>
+      ) : (
+        <p className="mt-3 text-sm text-textSecondary">Replace with SVG later.</p>
+      )}
+    </div>
+  );
+}
+
+function CodePayloadBlock({ code }: { code: string }) {
+  return (
+    <pre className="overflow-x-auto rounded-xl border border-white/10 bg-black/20 p-4 text-xs text-textSecondary">
+      <code className="font-mono">{code}</code>
+    </pre>
+  );
+}
+
 export default function ProductPage() {
   return (
     <div className="relative mx-auto max-w-7xl overflow-hidden px-4 py-14 sm:px-6 lg:px-8">
@@ -117,19 +144,35 @@ export default function ProductPage() {
 	      </Section>
 
 	      <Section
-	        title="Why monolithic systems fail"
+	        title="Why distributed optical AI"
 	      >
-	        <p className="mb-5 max-w-4xl text-sm leading-relaxed text-textSecondary">
-	          Most systems fail not because response options are missing, but because perception breaks first. Centralized
-	          pipelines are brittle, bandwidth-heavy, and slow to adapt. Swarm.ai replaces video-centric architectures
-	          with distributed, event-driven intelligence.
-	        </p>
-	        <ul className="grid gap-2 text-sm text-textSecondary md:grid-cols-2">
-	          <BulletLine>Single points of failure</BulletLine>
-	          <BulletLine>Bandwidth and latency penalties</BulletLine>
-	          <BulletLine>Vendor lock-in</BulletLine>
-	          <BulletLine>Perception instability</BulletLine>
-	        </ul>
+	        <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+	          <div>
+	            <p className="mb-5 max-w-4xl text-sm leading-relaxed text-textSecondary">
+	              Most systems fail not because response options are missing, but because perception breaks first. Centralized
+	              pipelines are brittle, bandwidth-heavy, and slow to adapt. Swarm.ai replaces video-centric architectures
+	              with distributed, event-driven intelligence.
+	            </p>
+	            <ul className="grid gap-2 text-sm text-textSecondary md:grid-cols-2">
+	              <BulletLine>Single points of failure</BulletLine>
+	              <BulletLine>Bandwidth and latency penalties</BulletLine>
+	              <BulletLine>Vendor lock-in</BulletLine>
+	              <BulletLine>Perception instability</BulletLine>
+	            </ul>
+	          </div>
+	          <DiagramPlaceholder title="Topology sketch">
+	            <div className="space-y-3">
+	              <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-sm text-textSecondary">
+	                <p className="font-semibold text-textPrimary">X Centralized (brittle)</p>
+	                <p className="mt-2">Video streams -&gt; central fusion -&gt; failure point</p>
+	              </div>
+	              <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-sm text-textSecondary">
+	                <p className="font-semibold text-textPrimary">✓ Distributed (resilient)</p>
+	                <p className="mt-2">Tracks/events -&gt; multi-node fusion -&gt; continues under loss</p>
+	              </div>
+	            </div>
+	          </DiagramPlaceholder>
+	        </div>
 	      </Section>
 
 	      <Section
@@ -138,9 +181,32 @@ export default function ProductPage() {
 	      >
 	        <div className="mt-8 rounded-2xl border border-white/10 bg-black/30 p-6">
 	          <p className="text-sm font-semibold text-textPrimary">Architecture diagram (placeholder)</p>
-	          <div className="mt-3 flex items-center justify-center rounded-xl border border-white/10 bg-black/20 p-5 text-center text-sm text-textSecondary">
-	            Diagram: Mantyx sensor nodes → Myrix edge perception → Nexus distributed fusion → operator / C2
+	          <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_auto_1fr_auto_1fr]">
+	            <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-sm text-textSecondary">
+	              <p className="font-semibold text-textPrimary">Sensor nodes</p>
+	              <div className="mt-3 space-y-2">
+	                <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2">EO</div>
+	                <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2">IR</div>
+	                <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2">Optional acoustic</div>
+	              </div>
+	            </div>
+	            <div className="hidden items-center justify-center text-textSecondary lg:flex">→</div>
+	            <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-sm text-textSecondary">
+	              <p className="font-semibold text-textPrimary">Edge perception</p>
+	              <div className="mt-3 rounded-lg border border-white/10 bg-black/20 px-3 py-3">
+	                Track extraction and local inference
+	              </div>
+	            </div>
+	            <div className="hidden items-center justify-center text-textSecondary lg:flex">→</div>
+	            <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-sm text-textSecondary">
+	              <p className="font-semibold text-textPrimary">Distributed fusion + operator/C2</p>
+	              <div className="mt-3 space-y-2">
+	                <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2">Fusion</div>
+	                <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2">C2/API</div>
+	              </div>
+	            </div>
 	          </div>
+	          <p className="mt-4 text-xs text-textSecondary">Placeholder schematic - replace with SVG later.</p>
 	        </div>
 
 	        <div className="mt-6 grid gap-6 lg:grid-cols-3">
@@ -189,9 +255,42 @@ export default function ProductPage() {
 	        </div>
 	      </Section>
 
+	      <Section title="Outputs & interfaces">
+	        <div className="grid gap-6 lg:grid-cols-2">
+	          <ul className="space-y-2 text-sm text-textSecondary">
+	            <BulletLine>Structured tracks/events with confidence and class hints</BulletLine>
+	            <BulletLine>Optional 3D track and pose updates</BulletLine>
+	            <BulletLine>Node telemetry for health and performance monitoring</BulletLine>
+	            <BulletLine>Audit logging for post-mission reconstruction</BulletLine>
+	            <BulletLine>Effector cueing interface for partner systems</BulletLine>
+	          </ul>
+	          <CodePayloadBlock
+	            code={`{
+  "track_id": "A17",
+  "timestamp": 172345345,
+  "node_id": "MX-03",
+  "position": [12.4, -3.1, 58.0],
+  "velocity": [2.3, 0.1, -0.4],
+  "confidence": 0.92,
+  "class_hint": "UAV",
+  "pose": { "rpy": [0.1, 0.0, 1.6] }
+}`}
+	          />
+	        </div>
+	      </Section>
+
 	      <Section
 	        title="Deployment forms"
 	      >
+	        <DiagramPlaceholder title="Deployment patterns">
+	          <div className="grid gap-2 sm:grid-cols-2">
+	            <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-textSecondary">Fixed site grid</div>
+	            <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-textSecondary">Rapid event</div>
+	            <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-textSecondary">Mobile vehicle</div>
+	            <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-textSecondary">Contested comms</div>
+	          </div>
+	        </DiagramPlaceholder>
+
 	        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 	          <InfoCard
 	            icon={<Building2 className="h-5 w-5" />}
@@ -238,7 +337,7 @@ export default function ProductPage() {
 	          </>
 	        }
 	        primary={{ href: '/contact?intent=pilot-discussion', label: 'Discuss a pilot' }}
-	        secondary={{ href: '/services', label: 'See how we engage' }}
+	        secondary={{ href: '/contact?intent=talk-to-an-engineer', label: 'Talk to an engineer' }}
 	      />
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-5 text-sm">
