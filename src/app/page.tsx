@@ -8,7 +8,7 @@ import Section from '../components/Section';
 import CtaStrip from '../components/CtaStrip';
 
 export const HOME_HERO_HEADING =
-  'Resilient tracking in contested airspace';
+  'Resilient tracking when it matters';
 export const HOME_ARCHITECTURE_HEADING = 'Architecture for real operations';
 
 export default function HomePage() {
@@ -307,7 +307,7 @@ export default function HomePage() {
               <div className="space-y-6">
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accentCool">Private preview</p>
 
-                <h1 className="mb-6 text-center text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-tight">
+                <h1 className="mb-[100px] text-center text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-tight">
                   {HOME_HERO_HEADING}
                   <span className="text-accent1">_</span>
                 </h1>
@@ -496,7 +496,7 @@ export default function HomePage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accentCool"></p>
 
-          <h1 className="mt-3 mb-8 text-center text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+          <h1 className="mt-3 mb-[100px] text-center text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
             {HOME_HERO_HEADING}
             <span className="text-accent1">_</span>
           </h1>
@@ -662,6 +662,7 @@ export default function HomePage() {
               platforms through a defined interface in permissioned contexts.
             </p>
           </div>
+          </div>
         </Section>
 
       <Section
@@ -694,6 +695,7 @@ export default function HomePage() {
               Expose cues, confidence, and audit logs through defined interfaces.
             </p>
           </div>
+        </div>
         </Section>
 
       <Section
@@ -757,6 +759,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+          </div>
       </Section>
 
       {/* <ReferencesStrip /> */}
